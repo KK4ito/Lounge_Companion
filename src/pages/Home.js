@@ -17,7 +17,7 @@ export default class Home extends React.Component {
         };
     }
     render() {
-        return
+        return (
             <Jumbotron>
                 <h1>{this.state.Title}</h1>
                 <p>{this.state.Description}</p>
@@ -25,6 +25,7 @@ export default class Home extends React.Component {
                 <p>{this.state.OpenTime}</p>
                 <h2>{this.state.SubtitleEvents}</h2>
                 <li></li>
-            </Jumbotron>;
+            </Jumbotron>
+        );
     }
 }
