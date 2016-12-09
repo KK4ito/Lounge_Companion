@@ -6,6 +6,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import WhereAreWe from './pages/WhereAreWe';
+import Home from './pages/Home';
 
 class App extends Component {
   render() {
@@ -29,6 +30,9 @@ class App extends Component {
           </Tab>
           <Tab label="Tab 3">
             <WhereAreWe name="Kevin" />
+          </Tab>
+          <Tab label="Tab 4">
+            <Home />
           </Tab>
         </Tabs>
       </div>
