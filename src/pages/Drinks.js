@@ -16,7 +16,7 @@ export default class Drinks extends React.Component {
     render() {
         return (
             <Jumbotron>
-                <h1>{this.state.Drinks}</h1>
+                <h1>{this.state.Title}</h1>
                 <li></li>
             </Jumbotron>
         );

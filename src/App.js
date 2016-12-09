@@ -8,7 +8,7 @@ import './App.css';
 import WhereAreWe from './pages/WhereAreWe';
 import Home from './pages/Home';
 import Drinks from './pages/Drinks';
-import Game from '.pages/Game';
+import Game from './pages/Game';
 
 class App extends Component {
   render() {
@@ -34,7 +34,7 @@ class App extends Component {
             <Game />
           </Tab>
           <Tab label="Map">
-            <WhereAreWe />
+            <WhereAreWe name="Map"/>
           </Tab>
         </Tabs>
       </div>
