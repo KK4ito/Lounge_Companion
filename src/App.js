@@ -35,7 +35,6 @@ class App extends Component {
     );
   }
 
-  var
 }
 
 export default App;
