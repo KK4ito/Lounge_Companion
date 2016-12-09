@@ -12,6 +12,7 @@ const EIFFEL_TOWER_POSITION = {
   lng: 2.294471
 };
 
+
 export default class WhereAreWe extends React.Component {
   constructor() {
      super();
@@ -19,7 +20,7 @@ export default class WhereAreWe extends React.Component {
    }
 
    componentDidMount() {
-     this.map = new google.maps.Map(this.refs.map, {
+     this.map = new window.google.maps.Map(this.refs.map, {
        center: EIFFEL_TOWER_POSITION,
        zoom: 16
      });

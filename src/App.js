@@ -34,7 +34,7 @@ class App extends Component {
             <Game />
           </Tab>
           <Tab label="Map">
-            <WhereAreWe name="Map"/>
+            <WhereAreWe />
           </Tab>
         </Tabs>
       </div>
