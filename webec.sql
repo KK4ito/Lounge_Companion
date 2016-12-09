@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Dec 09, 2016 at 12:35 PM
+-- Host: 127.0.0.1
+-- Generation Time: Dec 09, 2016 at 02:49 PM
 -- Server version: 10.1.16-MariaDB
--- PHP Version: 7.0.9
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -40,6 +40,7 @@ CREATE TABLE `drinkcategories` (
 CREATE TABLE `drinks` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE latin1_german1_ci NOT NULL,
+  `size` int(11) NOT NULL,
   `price` float NOT NULL,
   `categoryid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
