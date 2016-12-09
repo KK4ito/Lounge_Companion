@@ -7,6 +7,8 @@ import './App.css';
 
 import WhereAreWe from './pages/WhereAreWe';
 import Home from './pages/Home';
+import Drinks from './pages/Drinks';
+import Game from '.pages/Game';
 
 class App extends Component {
   render() {
@@ -22,17 +24,17 @@ class App extends Component {
         </p>
 
         <Tabs selected={0}>
-          <Tab label="Tab 1">
-            <WhereAreWe name="David" />
-          </Tab>
-          <Tab label="Tab 2">
-            <WhereAreWe name="Matthias" />
-          </Tab>
-          <Tab label="Tab 3">
-            <WhereAreWe name="Kevin" />
-          </Tab>
-          <Tab label="Tab 4">
+          <Tab label="Home">
             <Home />
+          </Tab>
+          <Tab label="Drinks">
+            <Drinks />
+          </Tab>
+          <Tab label="Toeggele">
+            <Game />
+          </Tab>
+          <Tab label="Map">
+            <WhereAreWe />
           </Tab>
         </Tabs>
       </div>
