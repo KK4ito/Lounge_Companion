@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
+import { ButtonGroup, Button } from 'react-bootstrap';
 
 
 export class Tabs extends React.Component {
@@ -21,12 +21,6 @@ export class Tabs extends React.Component {
     );
   }
 
- getDefaultProps() {
-   return {
-     selected: 0
-   };
- }
-
  handleClick(index, event) {
    event.preventDefault();
    this.setState({
@@ -37,19 +31,18 @@ export class Tabs extends React.Component {
    function labels(child, index) {
      let activeClass = (this.state.selected === index ? 'active' : '');
      return (
-       <li key={index}>
-         <a href="#"
+         <Button href="#"
+           key={index} 
            className={activeClass}
            onClick={this.handleClick.bind(this, index)}>
            {child.props.label}
-         </a>
-       </li>
+         </Button>
      );
    }
    return (
-     <ul className="tabs__labels">
+     <ButtonGroup className="tabs__labels" justified>
        {this.props.children.map(labels.bind(this))}
-     </ul>
+     </ButtonGroup>
    );
  }
  _renderContent() {
