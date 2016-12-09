@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 09, 2016 at 12:35 PM
+-- Generation Time: Dec 09, 2016 at 01:55 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -40,6 +40,7 @@ CREATE TABLE `drinkcategories` (
 CREATE TABLE `drinks` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE latin1_german1_ci NOT NULL,
+  `size` varchar(255) COLLATE latin1_german1_ci NOT NULL,
   `price` float NOT NULL,
   `categoryid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
