@@ -3,7 +3,7 @@ import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
 
 export class Tab extends React.Component {
-  displayName: 'Tab';
+
   render() {
     return (
       <div>
