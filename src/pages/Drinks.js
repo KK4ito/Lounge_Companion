@@ -10,7 +10,8 @@ export default class Drinks extends React.Component {
         super(props);
         this.state = {
             Title: 'Drinks',
-            Drinks: [{ name: 'Feldschloesschen',size: 5, price: 0.0, category: 1}]
+            Drinks: [{ name: 'Feldschloesschen',size: 5, price: 4.0, category: 1},
+                {name: 'Cola', size: 2.5, price: 3.0, category: 2}]
         };
     }
     render() {
@@ -20,15 +21,37 @@ export default class Drinks extends React.Component {
                 <Accordion>
                     <Panel header="Bier" eventKey="1">
                         <Table responsive>
-                            <tr>
-
-                            </tr>
+                            <tbody>
+                                {this.state.Drinks.map(function (drink) {
+                                    if(drink.category == 1){
+                                        return (
+                                            <tr>
+                                                <td >{drink.name}</td>
+                                                <td >{drink.size}</td>
+                                                <td >{drink.price}</td>
+                                            </tr>
+                                        );
+                                    }
+                                })}
+                            </tbody>
                         </Table>
                     </Panel>
                     <Panel header="Softdrinks" eventKey="2">
-                        <ListGroup>
-                            <ListGroupItem></ListGroupItem>
-                        </ListGroup>
+                        <Table responsive>
+                            <tbody>
+                            {this.state.Drinks.map(function (drink) {
+                                if(drink.category == 2){
+                                    return (
+                                        <tr>
+                                            <td >{drink.name}</td>
+                                            <td >{drink.size}</td>
+                                            <td >{drink.price}</td>
+                                        </tr>
+                                    );
+                                }
+                            })}
+                            </tbody>
+                        </Table>
                     </Panel>
                 </Accordion>
             </Jumbotron>
