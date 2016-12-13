@@ -1,11 +1,7 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Matth
- * Date: 09.12.2016
- * Time: 14:52
- */
+
+//Class which sets up the SQL-statements for the teams
 class TeamsMapper
 {
     public $database;
@@ -14,10 +10,56 @@ class TeamsMapper
     {
         $this->database = $db;
     }
-    function getTeams(){
+
+    function getTeams()
+    {
         $selection = $this->database->prepare('SELECT * FROM webec.teams');
-        $selection->execute();
-        $results = $selection->fetchAll();
+        $this->database->beginTransaction();
+        $success = $selection->execute();
+        if ($success) {
+            $results = $selection->fetchAll();
+        } else {
+            $results = '';
+        }
         return $results;
+    }
+
+    function createTeam($team)
+    {
+        $insertion = $this->database->prepare('INSERT INTO webec.teams(name, code) VALUES(:name,:code)');
+        $insertion->bindParam(':name', $team['name']);
+        $insertion->bindParam(':code', $team['code']);
+        $selection = $this->database->prepare('SELECT id FROM webec.teams WHERE (name=:name AND code=:code)');
+        $selection->bindParam(':name', $team['name']);
+        $selection->bindParam(':code', $team['code']);
+        $this->database->beginTransaction();
+        $successInsert = $insertion->execute();
+        if ($successInsert) {
+            $successSelect = $selection->execute();
+            if ($successSelect) {
+                $this->database->commit();
+                $result = $selection->fetch();
+                return $result;
+            } else {
+                $this->database->rollback();
+                $result = '';
+            }
+        } else {
+            $this->database->rollback();
+            $result = '';
+        }
+        return $result["id"];
+    }
+    
+    function deleteTeam($id)
+    {
+        $deletion = $this->database->prepare('DELETE FROM webec.teams WHERE id=:id');
+        $deletion->bindParam(':id', $id);
+        $this->database->beginTransaction();
+        $success = $deletion->execute();
+        if ($success) {
+            $this->database->commit();
+            return true;
+        } else return false;
     }
 }
