@@ -11,13 +11,53 @@ export default class Drinks extends React.Component {
         this.state = {
             Title: 'Drinks',
             Drinks: [{ name: 'Feldschloesschen',size: 5, price: 4.0, category: 1, id: 1},
-                {name: 'Cola', size: 2.5, price: 3.0, category: 2, id: 2}]
+                {name: 'Cola', size: 2.5, price: 3.0, category: 2, id: 2}],
+            DrinksServer: [],
+            DrinksCategory: [],
+            url: '64.137.190.213'
         };
     }
-    render() {
+    componentDidMount(){
+        fetch(this.state.url + '/drinkcategories')
+            .then(result=>{
+                this.setSetate({DrinksCategory:result.json()});
+            });
+        fetch(this.state.url + '/drinks')
+            .then(result=> {
+                this.setState({DrinksServer:result.json()});
+            });
+    }
+    /*
+<div>Items:</div>
+{ this.state.items.map(item=> { return <div>{http://item.name}</div>}) }
+</div>
+*/
+
+render() {
         return (
             <Jumbotron>
                 <h1>{this.state.Title}</h1>
+                <Accordion>
+                    {this.state.DrinksCategory.map(cat=>{
+                        return <Panel header={cat.name} eventKey={cat.id}>
+                            <Table responsive>
+                                <tbody>
+                                    {this.state.DrinksServer.map(drink=>{
+                                        if(drink.category == cat.id){
+                                            return (
+                                                <tr key={drink.id}>
+                                                    <td>{drink.name}</td>
+                                                    <td>{drink.size}</td>
+                                                    <td>{drink.price}</td>
+                                                </tr>
+                                            )
+                                        }
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Panel>
+                    })}
+                </Accordion>
                 <Accordion>
                     <Panel header="Bier" eventKey="1">
                         <Table responsive>
