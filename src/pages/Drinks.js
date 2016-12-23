@@ -2,7 +2,7 @@
  * Created by David on 09/12/2016.
  */
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, ListGroup, ListGroupItem, Accordion, Panel, Table} from 'react-bootstrap';
+import { Navbar, Jumbotron, Button, Accordion, Panel, Table} from 'react-bootstrap';
 
 
 export default class Drinks extends React.Component {
@@ -10,8 +10,8 @@ export default class Drinks extends React.Component {
         super(props);
         this.state = {
             Title: 'Drinks',
-            Drinks: [{ name: 'Feldschloesschen',size: 5, price: 4.0, category: 1},
-                {name: 'Cola', size: 2.5, price: 3.0, category: 2}]
+            Drinks: [{ name: 'Feldschloesschen',size: 5, price: 4.0, category: 1, id: 1},
+                {name: 'Cola', size: 2.5, price: 3.0, category: 2, id: 2}]
         };
     }
     render() {
@@ -25,7 +25,7 @@ export default class Drinks extends React.Component {
                                 {this.state.Drinks.map(function (drink) {
                                     if(drink.category == 1){
                                         return (
-                                            <tr>
+                                            <tr key={drink.id}>
                                                 <td >{drink.name}</td>
                                                 <td >{drink.size}</td>
                                                 <td >{drink.price}</td>
@@ -42,7 +42,7 @@ export default class Drinks extends React.Component {
                             {this.state.Drinks.map(function (drink) {
                                 if(drink.category == 2){
                                     return (
-                                        <tr>
+                                        <tr key={drink.id}>
                                             <td >{drink.name}</td>
                                             <td >{drink.size}</td>
                                             <td >{drink.price}</td>
