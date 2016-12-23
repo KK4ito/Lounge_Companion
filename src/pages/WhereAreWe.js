@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
+import { Navbar, Jumbotron, Button, ButtonToolbar } from 'react-bootstrap';
 
 const NOUVEM_LOUNGE = {
   lat: 47.480421,
@@ -22,6 +22,7 @@ export default class WhereAreWe extends React.Component {
     this.handleLocationError = this.handleLocationError.bind(this);
     this.setUserLocation = this.setUserLocation.bind(this);
     this.failedToGetUserLocation = this.failedToGetUserLocation.bind(this);
+    this.setDirection = this.setDirection.bind(this);
   }
 
 
@@ -43,7 +44,7 @@ export default class WhereAreWe extends React.Component {
     }
 
     panToLounge() {
-      console.log(this);
+
       this.state.map.panTo(NOUVEM_LOUNGE);
       this.state.marker.setMap(this.state.map);
     }
@@ -68,7 +69,7 @@ export default class WhereAreWe extends React.Component {
         lng: position.coords.longitude,
       };
       this.setState({
-        ownPosi: new window.google.maps.Marker({
+          ownPosi: new window.google.maps.Marker({
           position: pos,
           map: this.state.map,
           title: 'My current location'
@@ -89,22 +90,47 @@ export default class WhereAreWe extends React.Component {
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
     }
+    setDirection() {
+      console.log('setDirection entered');
+      let directionDisplay = new window.google.maps.DirectionsRenderer();
+      let directionService = new window.google.maps.DirectionsService();
+      directionDisplay.setMap(this.state.map);
 
-
+      let requestWay = {
+        origin: this.state.marker.position,
+        destination: this.state.ownPosi.position,
+        travelMode: 'WALKING',
+      }
+      directionService.route(requestWay, function(result, status){
+        if (status == window.google.maps.DirectionsStatus.OK) {
+          directionDisplay.setDirections(result);
+        }
+      });
+    }
     render() {
       const mapStyle = {
         width: 1300,
         height: 650,
         border: '1px solid black'
       };
+      let directionButton = null;
+      if (this.state.ownPosi) {
+        directionButton = <Button onClick={this.setDirection}>Draw Line</Button>;
+      } else {
+        directionButton = <Button disabled onClick={this.setDirection}>Draw Line</Button>;
+      }
 
       return (
         <Jumbotron>
           <h1>{this.state.Title}</h1>
-          <button onClick={this.panToLounge}>Show me your moves</button>
-          <button onClick={this.panToMe}>Show me where I am</button>
+          <ButtonToolbar>
+          <Button onClick={this.panToLounge}>Show me your moves</Button>
+          <Button onClick={this.panToMe}>Show me where I am</Button>
+          {directionButton}
+          </ButtonToolbar>
           <div ref="map" style={mapStyle}>Error I should be a map!</div>
-        </Jumbotron>
+         <div ref="panel"></div>
+       </Jumbotron>
       );
     }
   }
