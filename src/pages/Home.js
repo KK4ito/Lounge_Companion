@@ -14,11 +14,17 @@ export default class Home extends React.Component {
             SubtitleEvents: 'Events',
             Description: 'Wir sind die Studentenbar am Campus Brugg-Windisch der FHNW. Die wahren Studenten unter euch finden sich in der Vorlesungszeit jeden Donnerstag und Freitag ab 16:00 Uhr hinter dem Gebäude 4 wieder.',
             OpenTime: ['Do: 4pm - 2am','Fr: 4pm - 2am'],
-            Events: ['Toeggele Turnier: 18.11.16']
+            Events: [],
+            url: '64.137.190.213'
         };
     }
 
-
+    componentDidMount(){
+        fetch(this.state.url + '/events')
+            .then(result=>{
+                this.setSetate({Events:result.json()});
+            });
+    }
 
     render() {
         return (
