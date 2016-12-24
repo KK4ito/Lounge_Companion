@@ -14,17 +14,22 @@ export default class Drinks extends React.Component {
                 {name: 'Cola', size: 2.5, price: 3.0, category: 2, id: 2}],
             DrinksServer: [],
             DrinksCategory: [],
-            url: '64.137.190.213'
+            url: 'http://64.137.190.213/LoungeCompanionREST/src/public/index.php'
         };
     }
     componentDidMount(){
-        fetch(this.state.url + '/drinkcategories')
+        fetch(this.state.url + '/drinkcategories', {
+            method: 'GET'
+        })
             .then(result=>{
-                this.setSetate({DrinksCategory:result.json()});
+                this.state.DrinksCategory=result.json();
             });
-        fetch(this.state.url + '/drinks')
+        fetch(this.state.url + '/drinks', {
+            method: 'GET'
+        })
             .then(result=> {
-                this.setState({DrinksServer:result.json()});
+                this.state.DrinksServer=result.json();
+
             });
     }
     /*

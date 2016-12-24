@@ -15,15 +15,24 @@ export default class Home extends React.Component {
             Description: 'Wir sind die Studentenbar am Campus Brugg-Windisch der FHNW. Die wahren Studenten unter euch finden sich in der Vorlesungszeit jeden Donnerstag und Freitag ab 16:00 Uhr hinter dem Gebäude 4 wieder.',
             OpenTime: ['Do: 4pm - 2am','Fr: 4pm - 2am'],
             Events: [],
-            url: '64.137.190.213'
+            url: 'http://64.137.190.213/LoungeCompanionREST/src/public/index.php/events'
         };
     }
 
     componentDidMount(){
-        fetch(this.state.url + '/events')
+        fetch(this.state.url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
             .then(result=>{
-                this.setSetate({Events:result.json()});
-            });
+                //this.state.Events=result.blob();
+                //console.log(result);
+                return result.json();
+            })
+            .then(console.log('bla'));
     }
 
     render() {
