@@ -1,9 +1,5 @@
-/**
-* Created by David on 09/12/2016.
-*/
 import React, { Component } from 'react';
 import { Navbar, Jumbotron, Button, Accordion, Panel, Table} from 'react-bootstrap';
-
 
 export default class Drinks extends React.Component {
   constructor(props){
@@ -33,7 +29,7 @@ export default class Drinks extends React.Component {
       this.setState({DrinksServer: json});
     });
   }
-
+  
   render() {
     return (
       <Jumbotron>
