@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, Accordion, Panel, Table} from 'react-bootstrap';
+import React from 'react';
+import { Jumbotron, Accordion, Panel, Table} from 'react-bootstrap';
 
 export default class Drinks extends React.Component {
   constructor(props){
@@ -29,7 +29,7 @@ export default class Drinks extends React.Component {
       this.setState({DrinksServer: json});
     });
   }
-  
+
   render() {
     return (
       <Jumbotron>
@@ -40,7 +40,7 @@ export default class Drinks extends React.Component {
               <Table responsive>
                 <tbody>
                   {this.state.DrinksServer.map(drink => {
-                    if(drink.categoryid == cat.id){
+                    if(drink.categoryid === cat.id){
                       return (
                         <tr key={drink.id}>
                           <td>{drink.name}</td>

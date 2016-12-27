@@ -1,6 +1,6 @@
 
-import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button , ListGroup, ListGroupItem, FormControl, FormGroup, ControlLabel, Grid, Row, Col, Clearfix} from 'react-bootstrap';
+import React from 'react';
+import { Jumbotron, ListGroup, ListGroupItem, FormControl, FormGroup, ControlLabel, Grid, Row, Col } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class Game extends React.Component {

@@ -1,8 +1,6 @@
-/**
-* Created by David on 09/12/2016.
-*/
-import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, ListGroup, ListGroupItem, Modal } from 'react-bootstrap';
+
+import React from 'react';
+import { Jumbotron, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 
 export default class Home extends React.Component {

@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
-
+import React from 'react';
 
 export class Tab extends React.Component {
 

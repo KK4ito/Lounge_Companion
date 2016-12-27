@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
-
 
 export class Tabs extends React.Component {
   constructor(props){
@@ -32,7 +31,7 @@ export class Tabs extends React.Component {
      let activeClass = (this.state.selected === index ? 'active' : '');
      return (
          <Button href="#"
-           key={index} 
+           key={index}
            className={activeClass}
            onClick={this.handleClick.bind(this, index)}>
            {child.props.label}
