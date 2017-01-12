@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Jumbotron, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Jumbotron, ListGroup, ListGroupItem, PanelGroup, Panel } from 'react-bootstrap';
 
 
 export default class Home extends React.Component {
@@ -45,15 +45,20 @@ export default class Home extends React.Component {
             })}
           </ListGroup>
           <h2>{this.state.SubtitleEvents}</h2>
-          <ListGroup>
+          <PanelGroup accordion>
             {this.state.Events.map(event => {
-              return <ListGroupItem
-                key={event.id}
-                onClick={ () => this.showEventsDetails(event)}>
-                {event.name}
-              </ListGroupItem>;
+              return <Panel
+                eventKey={event.id}
+                onClick={ () => this.showEventsDetails(event)}
+                header={event.name}>
+                <ListGroup>
+                  <ListGroupItem header="Startet">{event.start}</ListGroupItem>
+                  <ListGroupItem header="Ended" >{event.end}</ListGroupItem>
+                  <ListGroupItem header="Beschreibung" >{event.description}</ListGroupItem>
+                </ListGroup>
+              </Panel>;
             })}
-          </ListGroup>
+          </PanelGroup>
         </Jumbotron>
       );
     }

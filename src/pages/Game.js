@@ -9,9 +9,23 @@ export default class Game extends React.Component {
         this.state = {
             current: 'Gruppe 1 vs Gruppe 2',
             captchaOK: null,
+            url: 'http://64.137.190.213/LoungeCompanionREST/src/public/index.php/teams',
+            Teams: [],
+            toDelete: null
         };
 
         this.captchaChanged = this.captchaChanged.bind(this);
+
+    }
+
+    componentDidMount(){
+        fetch(this.state.url, {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(json => {
+                this.setState({Teams: json})
+            });
 
     }
 
@@ -28,6 +42,35 @@ export default class Game extends React.Component {
         });
       }
     }
+/*
+    getOldestTeams(){
+        console.log("startet get oldest");
+        console.log(this.state.Teams.length);
+        console.log(this.state.Teams);
+        console.log(this.state.Teams[0].entrytime < this.state.Teams[1].entrytime);
+        if (this.state.Teams.length < 2){
+            return 'Nicht genug Spieler angemeldet';
+        }
+        else if (this.state.Teams.length == 2){
+            return (this.state.Teams[0].name + ' vs ' + this.state.Teams[1].name);
+        }
+        else {
+            var t1 = this.state.Teams[0];
+            var t2 = this.state.Teams[1];
+            for (var team in this.state.Teams) {
+                if (t2.entrytime < t1.entrytime){
+                    if (team.entrytime < t2.entrytime){
+                        t2 = team;
+                    }
+                } else {
+                    if (team.entrytime < t1.entrytime){
+                        t1 = team;
+                    }
+                }
+            }
+            return (t1.name + ' vs ' + t2.name);
+        }
+    }*/
 /*
       let options = {
         method: 'POST',
@@ -69,14 +112,15 @@ export default class Game extends React.Component {
                             <h2>angemeldete Teams</h2>
                             <Col xs={12} md={8}>
                                 <ListGroup>
-                                    <ListGroupItem>Gruppe 1</ListGroupItem>
-                                    <ListGroupItem>Gruppe 2</ListGroupItem>
+                                    {this.state.Teams.map(team=>{
+                                        return <ListGroupItem >{team.name}</ListGroupItem>
+                                    })}
                                 </ListGroup>
                             </Col>
                             <Col xs={6} md={4}>
                                <FormGroup>
                                    <ControlLabel>Zurzeit spielt:</ControlLabel>
-                                   <FormControl.Static>{this.state.current}</FormControl.Static>
+                                   <FormControl.Static>Platzhalter</FormControl.Static>
                                    <FormControl.Static>Das Team, welches verloren hat, meldet sich ab</FormControl.Static>
                                    <ReCAPTCHA
                                      ref="recaptcha"
@@ -96,7 +140,7 @@ export default class Game extends React.Component {
                         <Row className="show-grid">
                             <h2>Anmelden</h2>
                         </Row>
-                        <Row classname="show-grid">
+                        <Row className="show-grid">
                             <h2>Master Code aendern</h2>
 
                         </Row>
