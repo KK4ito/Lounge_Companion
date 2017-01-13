@@ -10,7 +10,7 @@ spl_autoload_register(function ($class_name) {
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 
-$config['db']['host']   = "localhost";
+$config['db']['host']   = "64.137.190.213";
 $config['db']['user']   = "root";
 $config['db']['pass']   = "";
 $config['db']['dbname'] = "webec";
@@ -39,7 +39,17 @@ $container['db'] = function ($c) {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
 };
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
 
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+});
 
 
 $app->get('/events', function (Request $request, Response $response) {

@@ -50,7 +50,7 @@ class TeamsMapper
         }
         return $result["id"];
     }
-    
+
     function deleteTeam($id)
     {
         $deletion = $this->database->prepare('DELETE FROM webec.teams WHERE id=:id');
