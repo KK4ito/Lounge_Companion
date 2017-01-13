@@ -11,6 +11,7 @@ class TeamsMapper
         $this->database = $db;
     }
 
+    // Handles GET Method and returns all teams
     function getTeams()
     {
         $selection = $this->database->prepare('SELECT * FROM webec.teams');
@@ -19,11 +20,12 @@ class TeamsMapper
         if ($success) {
             $results = $selection->fetchAll();
         } else {
-            $results = '';
+            $results = 'could not fetch teams from database';
         }
         return $results;
     }
 
+    // creates a new Team from the body of the POST request
     function createTeam($team)
     {
         $insertion = $this->database->prepare('INSERT INTO webec.teams(name, code) VALUES(:name,:code)');
@@ -42,15 +44,16 @@ class TeamsMapper
                 return $result;
             } else {
                 $this->database->rollback();
-                $result = '';
+                $result = 'could not create team';
             }
         } else {
             $this->database->rollback();
-            $result = '';
+            $result = 'could not create team';
         }
         return $result["id"];
     }
 
+    // deletes the team with the chosen id
     function deleteTeam($id)
     {
         $deletion = $this->database->prepare('DELETE FROM webec.teams WHERE id=:id');

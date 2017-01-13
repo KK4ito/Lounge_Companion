@@ -11,6 +11,7 @@ class EventsMapper
         $this->database = $db;
     }
 
+    // Handles GET method and returns all events
     function getEvents()
     {
         $selection = $this->database->prepare('SELECT * FROM webec.events');
@@ -19,11 +20,12 @@ class EventsMapper
         if ($success) {
             $results = $selection->fetchAll();
         } else {
-            $results = '';
+            $results = 'failed to fetch events from database';
         }
         return $results;
     }
 
+    //creates a new event from the body of the POST request
     function createEvent($event)
     {
         $insertion = $this->database->prepare('INSERT INTO webec.events(name, start, end, description) VALUES(:name, :start,:end,:description)');
@@ -46,15 +48,16 @@ class EventsMapper
                 return $result;
             } else {
                 $this->database->rollback();
-                $result = '';
+                $result = 'failed to create event ';
             }
         } else {
             $this->database->rollback();
-            $result = '';
+            $result = 'failed to create event';
         }
         return $result["id"];
     }
 
+    // deletes the event with the chosen ID
     function deleteEvent($id)
     {
         $deletion = $this->database->prepare('DELETE FROM webec.events WHERE id=:id');

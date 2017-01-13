@@ -10,6 +10,7 @@ class DrinkcategoriesMapper
     {
         $this->database = $db;
     }
+    // Handles GET method and returns all categories
     function getDrinkCategories(){
         $selection = $this->database->prepare('SELECT * FROM webec.drinkcategories');
         $this->database->beginTransaction();
@@ -17,10 +18,12 @@ class DrinkcategoriesMapper
         if ($success) {
             $results = $selection->fetchAll();
         } else {
-            $results = '';
+            $results = 'Could not fetch categories';
         }
         return $results;
     }
+    
+    // creates a new category from body of post request
     function createDrinkCategory($drinkcategory)
     {
         $insertion = $this->database->prepare('INSERT INTO webec.drinkcategories(name) VALUES(:name)');
@@ -41,10 +44,12 @@ class DrinkcategoriesMapper
             }
         } else {
             $this->database->rollback();
-            $result = '';
+            $result = 'could not create category';
         }
         return $result["id"];
     }
+    
+    //deletes the category with the chosen ID
     function deleteDrinkCategory($id)
     {
         $deletion = $this->database->prepare('DELETE FROM webec.drinkcategories WHERE id=:id');
