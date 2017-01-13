@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 import { Tabs } from './components/Tabs';
 import { Tab } from './components/Tab';
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import logo from './beer_white.png';
 import './App.css';
 
 import WhereAreWe from './pages/WhereAreWe';
@@ -16,12 +16,12 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>Lounge Companion</h2>
         </div>
 
-        <p className="App-intro">
+        {/*}<p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        </p>*/}
 
         <Tabs selected={0}>
           <Tab label="Home">

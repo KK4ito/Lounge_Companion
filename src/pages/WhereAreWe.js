@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, ButtonToolbar } from 'react-bootstrap';
+import React from 'react';
+import { Jumbotron, Button, ButtonToolbar } from 'react-bootstrap';
 
 const NOUVEM_LOUNGE = {
   lat: 47.480421,
@@ -102,7 +102,7 @@ export default class WhereAreWe extends React.Component {
         travelMode: 'WALKING',
       }
       directionService.route(requestWay, function(result, status){
-        if (status == window.google.maps.DirectionsStatus.OK) {
+        if (status === window.google.maps.DirectionsStatus.OK) {
           directionDisplay.setDirections(result);
         }
       });

@@ -2,7 +2,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require '/vendor/autoload.php';
+require '../../vendor/autoload.php';
 spl_autoload_register(function ($class_name) {
     include $class_name . '.php';
 });
@@ -12,7 +12,7 @@ $config['addContentLengthHeader'] = false;
 
 $config['db']['host']   = "64.137.190.213";
 $config['db']['user']   = "root";
-$config['db']['pass']   = "";
+$config['db']['pass']   = "webec_2016";
 $config['db']['dbname'] = "webec";
 
 
@@ -43,12 +43,17 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
 
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
-        ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+	    ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
 
 
