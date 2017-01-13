@@ -10,16 +10,23 @@ export default class Game extends React.Component {
         this.state = {
             current: 'Gruppe 1 vs Gruppe 2',
             captchaOK: null,
-            url: 'http://64.137.190.213/LoungeCompanionREST/src/public/index.php/teams',
+            url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php/teams',
             Teams: [],
-            toDelete: null
+            toDelete: null,
+            NewCode: null,
+            formDeleteValue: '',
+            formCreateName: '',
+            formCreateCode: ''
         };
-
         this.captchaChanged = this.captchaChanged.bind(this);
-
+        this.deleteTeam = this.deleteTeam.bind(this);
+        this.createTeam = this.createTeam.bind(this);
+        this.changeMaster = this.changeMaster.bind(this);
+        this.onChangeDelete = this.onChangeDelete.bind(this);
+        this.onChangeCreateCode = this.onChangeCreateCode.bind(this);
+        this.onChangeCreateName = this.onChangeCreateName.bind(this);
+        this.onChangeCode = this.onChangeCode.bind(this);
     }
-
-
 
     componentDidMount(){
         fetch(this.state.url, {
@@ -29,7 +36,6 @@ export default class Game extends React.Component {
             .then(json => {
                 this.setState({Teams: json})
             });
-
     }
 
     captchaChanged(value) {
@@ -46,8 +52,34 @@ export default class Game extends React.Component {
       }
     }
 
+    deleteTeam(value) {
+      console.log(value);
+    }
 
+    createTeam(name, code) {
+      console.log(name);
+      console.log(code);
+    }
 
+    changeMaster(value) {
+      console.log(value);
+    }
+
+    onChangeDelete(e) {
+      this.setState({ formDeleteValue: e.target.value });
+    }
+
+    onChangeCreateCode(e) {
+      this.setState({ formCreateCode: e.target.value });
+    }
+
+    onChangeCreateName(e) {
+      this.setState({ formCreateName: e.target.value });
+    }
+
+    onChangeCode(e) {
+      this.setState({ newCode: e.target.value });
+    }
 /*
     getOldestTeams(){
         console.log("startet get oldest");
@@ -106,9 +138,7 @@ export default class Game extends React.Component {
       })
       .then(response => response.json())
       .then(json => console.log(json));
-
 */
-
     render() {
         return (
             <Jumbotron>
@@ -128,11 +158,6 @@ export default class Game extends React.Component {
                                    <ControlLabel>Zurzeit spielt:</ControlLabel>
                                    <FormControl.Static>Platzhalter</FormControl.Static>
                                    <FormControl.Static>Das Team, welches verloren hat, meldet sich ab</FormControl.Static>
-                                   <ReCAPTCHA
-                                     ref="recaptcha"
-                                     sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
-                                     onChange={this.captchaChanged}
-                                     />
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -143,8 +168,15 @@ export default class Game extends React.Component {
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
+                                    value={this.state.formDeleteValue}
+                                    onChange={this.onChangeDelete}
                                 />
-                                <Button type="submit">
+                                <ReCAPTCHA
+                                  ref="recaptcha"
+                                  sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
+                                  onChange={this.captchaChanged}
+                                  />
+                                <Button onClick={() => this.deleteTeam(this.state.formDeleteValue)}>
                                     Abmelden
                                 </Button>
                             </FormGroup>
@@ -156,15 +188,18 @@ export default class Game extends React.Component {
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Teamnamen an"
+                                    value={this.state.formCreateName}
+                                    onChange={this.onChangeCreateName}
                                 />
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
+                                    value={this.state.formCreateCode}
+                                    onChange={this.onChangeCreateCode}
                                 />
-                                <Button type="submit">
+                              <Button onClick={() => this.createTeam(this.state.formCreateName, this.state.formCreateCode)}>
                                     Anmelden
                                 </Button>
-
                             </FormGroup>
                         </Row>
                         <Row className="show-grid">
@@ -173,12 +208,13 @@ export default class Game extends React.Component {
                                 <FormControl
                                     type="text"
                                     placeholder="neuer Master Code"
+                                    value={this.state.newCode}
+                                    onChange={this.onChangeCode}
                                 />
-                                <Button type="submit">
+                              <Button onClick={() =>  this.changeMaster(this.state.newCode)}>
                                 Code anpassen
                                 </Button>
                             </FormGroup>
-
                         </Row>
                     </Grid>
             </Jumbotron>

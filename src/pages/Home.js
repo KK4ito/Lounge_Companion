@@ -13,7 +13,7 @@ export default class Home extends React.Component {
       Description: 'Wir sind die Studentenbar am Campus Brugg-Windisch der FHNW. Die wahren Studenten unter euch finden sich in der Vorlesungszeit jeden Donnerstag und Freitag ab 16:00 Uhr hinter dem Gebäude 4 wieder.',
       OpenTime: ['Do: 4pm - 2am','Fr: 4pm - 2am'],
       Events: [],
-      url: 'http://64.137.190.213/LoungeCompanionREST/src/public/index.php/events',
+      url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php/events',
     };
 
     this.showEventsDetails = this.showEventsDetails.bind(this);

@@ -2,6 +2,7 @@
   "name": "LoungeCompanion",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://64.137.190.213/LoungeCompanion/",
   "devDependencies": {
     "react-scripts": "0.8.1"
   },

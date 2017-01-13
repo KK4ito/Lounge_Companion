@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs } from './components/Tabs';
 import { Tab } from './components/Tab';
-// import logo from './logo.svg';
+
 import logo from './beer_white.png';
 import './App.css';
 
@@ -40,7 +40,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 export default App;

@@ -9,7 +9,7 @@ export default class Drinks extends React.Component {
       Drinks: [],
       DrinksServer: [],
       DrinksCategory: [],
-      url: 'http://64.137.190.213/LoungeCompanionREST/src/public/index.php'
+      url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php'
     };
   }
   componentDidMount(){
