@@ -31,7 +31,7 @@ class TeamsMapper
         $insertion = $this->database->prepare('INSERT INTO webec.teams(name, code) VALUES(:name,:code)');
         $insertion->bindParam(':name', $team['name']);
         $insertion->bindParam(':code', $team['code']);
-        $selection = $this->database->prepare('SELECT id FROM webec.teams WHERE (name=:name AND code=:code)');
+        $selection = $this->database->prepare('SELECT * FROM webec.teams WHERE (name=:name AND code=:code)');
         $selection->bindParam(':name', $team['name']);
         $selection->bindParam(':code', $team['code']);
         $this->database->beginTransaction();
