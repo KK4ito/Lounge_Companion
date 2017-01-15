@@ -123,8 +123,6 @@ export default class WhereAreWe extends React.Component {
 
     render() {
       const mapStyle = {
-        width: 1300,
-        height: 650,
         border: '1px solid black'
       };
       let directionButton = null;
@@ -141,8 +139,8 @@ export default class WhereAreWe extends React.Component {
                 <Button onClick={this.panToMe}>Locate me</Button>
                 {directionButton}
               </ButtonToolbar>
-              <div ref="map" style={mapStyle}>Error I should be a map!</div>
-              <div ref="panel"></div>
+              <div className="map-responsive" ref="map" style={mapStyle}>Error I should be a map!</div>
+              {/*<div ref="panel"></div>*/}
             </Jumbotron>
           );
         }

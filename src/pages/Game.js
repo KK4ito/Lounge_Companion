@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Jumbotron, ListGroup, ListGroupItem, FormControl, FormGroup, ControlLabel, Button, Grid, Row, Col } from 'react-bootstrap';
+import Notifications, {notify} from 'react-notify-toast';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class Game extends React.Component {
@@ -16,7 +17,8 @@ export default class Game extends React.Component {
             NewCode: null,
             formDeleteValue: '',
             formCreateName: '',
-            formCreateCode: ''
+            formCreateCode: '',
+            alert: null,
         };
         this.captchaChanged = this.captchaChanged.bind(this);
         this.deleteTeam = this.deleteTeam.bind(this);
@@ -42,6 +44,7 @@ export default class Game extends React.Component {
       console.log('captchaChanged');
       console.log(value);
       if(value){
+        // verify Recaptcha without google api
         this.setState({
           captchaOK: true
         });
@@ -54,11 +57,47 @@ export default class Game extends React.Component {
 
     deleteTeam(value) {
       console.log(value);
+      console.log(this.state.toDelete);
+      if(this.state.toDelete && (value === this.state.toDelete.code)) {
+        fetch(this.state.url + '/' + this.state.toDelete.id, {
+          method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(output => {
+          if(output) {
+            notify.show('Team gelöscht', 'success');
+            fetch(this.state.url, {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(json => {
+                    this.setState({Teams: json})
+                });
+          }
+        }
+      )} else {
+        notify.show('Falsche Code', 'error');
+      }
     }
 
     createTeam(name, code) {
-      console.log(name);
-      console.log(code);
+      if(name && code) {
+        let request = {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: name,
+            code: code,
+          }),
+        };
+        fetch(this.state.url, request)
+        .then(res => res.json())
+        .then(output => this.setState({Teams: this.state.Teams.concat([output])}))
+        .then( () => notify.show('Team erstellt', 'success'));
+      }
     }
 
     changeMaster(value) {
@@ -109,39 +148,23 @@ export default class Game extends React.Component {
             return (t1.name + ' vs ' + t2.name);
         }
     }*/
-/*
-      let options = {
-        method: 'POST',
-        mode: 'cors',
-        url: 'https://www.google.com/recaptcha/api/siteverify',
-        form:   {
-          secret: '6LfArg8UAAAAAFOzAkZ0NLfC24HGntCHWJJLczG2',
-          response: value
-          //response: 'fweiojfweiodrfjeiodfeiodh'
-        }
-      };
-      fetch(options)
-      .then(res =>{
-        console.log(res.json())
-      });
 
-      fetch('https://www.google.com/recaptcha/api/siteverify', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          secret: '6LfArg8UAAAAAFOzAkZ0NLfC24HGntCHWJJLczG2',
-          response: value
-        }),
-      })
-      .then(response => response.json())
-      .then(json => console.log(json));
-*/
     render() {
+      let clickedTeam = null;
+      if (this.state.toDelete) {
+          clickedTeam = <FormControl.Static >{this.state.toDelete.name}</FormControl.Static>;
+      } else {
+          clickedTeam = <FormControl.Static >Hier sollte das angeklickte Team stehen</FormControl.Static>;
+      }
+      let playingTeam = null;
+      if (this.state.Teams[0] && this.state.Teams[1]) {
+          playingTeam = <FormControl.Static>{this.state.Teams[0].name} vs {this.state.Teams[1].name}</FormControl.Static>;
+      } else {
+        playingTeam = <FormControl.Static>Platzhalter</FormControl.Static>;
+      }
         return (
             <Jumbotron>
+              <Notifications />
                 <h1>Toeggele</h1>
                     <Grid>
                         <Row className="show-grid">
@@ -149,14 +172,14 @@ export default class Game extends React.Component {
                             <Col xs={12} md={8}>
                                 <ListGroup>
                                     {this.state.Teams.map(function (team, index) {
-                                        return <ListGroupItem textAlign="center" key={index} onClick={this.state.toDelete = team.id}>{team.name}</ListGroupItem>
+                                        return <ListGroupItem key={index} onClick={() => this.setState({toDelete: team})}>{team.name}</ListGroupItem>
                                     }, this)}
                                 </ListGroup>
                             </Col>
                             <Col xs={6} md={4}>
                                <FormGroup>
                                    <ControlLabel>Zurzeit spielt:</ControlLabel>
-                                   <FormControl.Static>Platzhalter</FormControl.Static>
+                                  {playingTeam}
                                    <FormControl.Static>Das Team, welches verloren hat, meldet sich ab</FormControl.Static>
                                 </FormGroup>
                             </Col>
@@ -164,19 +187,21 @@ export default class Game extends React.Component {
                         <Row className="show-grid">
                             <h2>Abmelden</h2>
                             <FormGroup controlId="formDelete">
-                                <FormControl.Static >Hier sollte das angeklickte Team stehen</FormControl.Static>
+                                {playingTeam}
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
                                     value={this.state.formDeleteValue}
                                     onChange={this.onChangeDelete}
                                 />
+                              <br />
                                 <ReCAPTCHA
                                   ref="recaptcha"
                                   sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
                                   onChange={this.captchaChanged}
                                   />
-                                <Button onClick={() => this.deleteTeam(this.state.formDeleteValue)}>
+                                <br />
+                                <Button disabled={!this.state.captchaOK} onClick={() => this.deleteTeam(this.state.formDeleteValue)}>
                                     Abmelden
                                 </Button>
                             </FormGroup>
@@ -191,12 +216,14 @@ export default class Game extends React.Component {
                                     value={this.state.formCreateName}
                                     onChange={this.onChangeCreateName}
                                 />
+                              <br />
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
                                     value={this.state.formCreateCode}
                                     onChange={this.onChangeCreateCode}
                                 />
+                                <br />
                               <Button onClick={() => this.createTeam(this.state.formCreateName, this.state.formCreateCode)}>
                                     Anmelden
                                 </Button>

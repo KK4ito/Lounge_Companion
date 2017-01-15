@@ -15,8 +15,6 @@ export default class Home extends React.Component {
       Events: [],
       url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php/events',
     };
-
-    this.showEventsDetails = this.showEventsDetails.bind(this);
   }
 
   componentDidMount(){
@@ -29,10 +27,6 @@ export default class Home extends React.Component {
     });
   }
 
-  showEventsDetails(event) {
-    console.log(event);
-  }
-
   render() {
     return (
       <Jumbotron>
@@ -42,14 +36,14 @@ export default class Home extends React.Component {
         <ListGroup>
           {this.state.OpenTime.map(function(time, index){
             return <ListGroupItem key={index}>{time}</ListGroupItem>;
-            })}
+            })
+          }
           </ListGroup>
           <h2>{this.state.SubtitleEvents}</h2>
           <PanelGroup accordion>
             {this.state.Events.map(event => {
               return <Panel
                 eventKey={event.id}
-                onClick={ () => this.showEventsDetails(event)}
                 header={event.name}>
                 <ListGroup>
                   <ListGroupItem header="Startet">{event.start}</ListGroupItem>

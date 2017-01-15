@@ -18,11 +18,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Lounge Companion</h2>
         </div>
-
-        {/*}<p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>*/}
-
+        <div className="container-fluid">
         <Tabs selected={0}>
           <Tab label="Home">
             <Home />
@@ -37,6 +33,7 @@ class App extends Component {
             <WhereAreWe />
           </Tab>
         </Tabs>
+        </div>
       </div>
     );
   }
