@@ -104,7 +104,7 @@ $app->post('/teams', function (Request $request, Response $response) {
     $team['name'] = filter_var($data['name'], FILTER_SANITIZE_STRING);
     $team['code'] = filter_var($data['code'], FILTER_SANITIZE_STRING);
     $mapper = new TeamsMapper($this->db);
-    $teamID =$mapper->createteam($team);
+    $teamID=$mapper->createteam($team);
     $response->getBody()->write(json_encode($teamID),true);
     return $response;
 });
@@ -131,6 +131,26 @@ $app->post('/drinkcategories', function (Request $request, Response $response) {
 });
 
 
+$app->post('/teams', function (Request $request, Response $response) {
+    $data = $request->getParsedBody();
+    $team['name'] = filter_var($data['name'], FILTER_SANITIZE_STRING);
+    $team['code'] = filter_var($data['code'], FILTER_SANITIZE_STRING);
+    $mapper = new TeamsMapper($this->db);
+    $teamID =$mapper->createteam($team);
+    $response->getBody()->write(json_encode($teamID),true);
+    return $response;
+});
+
+
+$app->put('/teams/{id}',function (Request $request, Response $response){
+    $id = $request->getAttribute('id');
+    $data = $request ->getParsedBody();
+    $code = filter_var($data['code'],FILTER_SANITIZE_STRING;
+    $mapper = new TeamsMapper($this->db);
+    $newTeam = $mapper->putTeam($id,$code);
+    $response->getBody()->write(json_encode($newTeam),true));
+    return $response;
+}
 
 
 $app->delete('/events/{id}', function (Request $request,Response $response) {

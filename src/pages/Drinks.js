@@ -12,6 +12,7 @@ export default class Drinks extends React.Component {
       url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php'
     };
   }
+  // fetch categories and drinks from API
   componentDidMount(){
     fetch(this.state.url + '/drinkcategories', {
       method: 'GET'
@@ -36,6 +37,7 @@ export default class Drinks extends React.Component {
         <h1>{this.state.Title}</h1>
         <Accordion>
           {this.state.DrinksCategory.map(cat => {
+            //create an expandable Table for each drinkcategory
             return <Panel header={cat.name} eventKey={cat.id}>
               <Table responsive bsClass="drinkTable" >
                 <tbody>

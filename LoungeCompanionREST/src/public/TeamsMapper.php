@@ -53,6 +53,22 @@ class TeamsMapper
         return $result["id"];
     }
 
+    function putTeam($id,$code){
+        $update = $this->database->prepare('UPDATE webec.teams SET code=:code WHERE id=:id');
+        $update->bindParam('code',$code);
+        $update-> bindParam('id',$id);
+        $this -> database->beginTrainsaction();
+        $successUpdate = $update->execute();
+        if($successUpdate){
+            $this->database->commit();
+            $result=$update->fetch();
+            return $result;
+        }else{
+            $this->database->rollback();
+            return = 'could not change code of team';
+        }
+    }
+
     // deletes the team with the chosen id
     function deleteTeam($id)
     {

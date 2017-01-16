@@ -1,7 +1,8 @@
 import React from 'react';
 import { Jumbotron, Button, ButtonToolbar } from 'react-bootstrap';
 
-const NOUVEM_LOUNGE = {
+// Coordinates of Novum Lounge
+const NOVUM_LOUNGE = {
   lat: 47.480421,
   lng: 8.210647
 };
@@ -29,15 +30,15 @@ export default class WhereAreWe extends React.Component {
     this.setState({
       map: new window.google.maps.Map(this.refs.map,
         {
-          center: NOUVEM_LOUNGE,
+          center: NOUVUM_LOUNGE,
           zoom: 16
         }
       ),
       marker: new window.google.maps.Marker(
         {
-          position: NOUVEM_LOUNGE,
+          position: NOUVUM_LOUNGE,
           map: this.state.map,
-          title: 'Nouvem Lounge'
+          title: 'Novum Lounge'
         }
       ),
       infoWindow: new window.google.maps.InfoWindow(
@@ -48,12 +49,13 @@ export default class WhereAreWe extends React.Component {
     });
   }
 
+// Move the map to center on the novum lounge and set a marker
   panToLounge() {
-
-    this.state.map.panTo(NOUVEM_LOUNGE);
+    this.state.map.panTo(NOUVUM_LOUNGE);
     this.state.marker.setMap(this.state.map);
   }
 
+// try to get location from client and set a marker
   panToMe() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -68,6 +70,7 @@ export default class WhereAreWe extends React.Component {
     }
   }
 
+// set the current pos to the position returned from the browser and center the map
   setUserLocation(position) {
     let pos = {
       lat: position.coords.latitude,
@@ -90,6 +93,7 @@ export default class WhereAreWe extends React.Component {
     this.handleLocationError(true, this.state.infoWindow, this.state.map.getCenter());
   }
 
+  // show an error if the location could not be retrieved
   handleLocationError(browserHasGeolocation, infoWindow, pos) {
     this.state.infoWindow.setPosition(pos);
     this.state.infoWindow.setContent(browserHasGeolocation ?
@@ -97,6 +101,7 @@ export default class WhereAreWe extends React.Component {
       'Error: Your browser doesn\'t support geolocation.');
     }
 
+    // show the shortest route for walking from current loc to lounge
     setDirection() {
       let directionDisplay = new window.google.maps.DirectionsRenderer();
       let directionService = new window.google.maps.DirectionsService();
@@ -126,16 +131,18 @@ export default class WhereAreWe extends React.Component {
         border: '1px solid black'
       };
       let directionButton = null;
+      // enable the draw line button after a position is set.
       if (this.state.ownPosi) {
         directionButton = <Button onClick={this.setDirection}>Draw Line</Button>;
         } else {
           directionButton = <Button disabled onClick={this.setDirection}>Draw Line</Button>;
         }
           return (
+            // Build the maps canvas with the buttons above
             <Jumbotron>
               <h1>{this.state.Title}</h1>
               <ButtonToolbar>
-                <Button onClick={this.panToLounge}>Locate Nouvem Lounge</Button>
+                <Button onClick={this.panToLounge}>Locate Novum Lounge</Button>
                 <Button onClick={this.panToMe}>Locate me</Button>
                 {directionButton}
               </ButtonToolbar>

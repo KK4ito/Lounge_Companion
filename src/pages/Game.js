@@ -30,6 +30,7 @@ export default class Game extends React.Component {
         this.onChangeCode = this.onChangeCode.bind(this);
     }
 
+    // fetch teams from API
     componentDidMount(){
         fetch(this.state.url, {
             method: 'GET',
@@ -40,6 +41,7 @@ export default class Game extends React.Component {
             });
     }
 
+    // check and verify captcha
     captchaChanged(value) {
       console.log('captchaChanged');
       console.log(value);
@@ -55,6 +57,7 @@ export default class Game extends React.Component {
       }
     }
 
+    //check code of team to delete and delete if it matches
     deleteTeam(value) {
       console.log(value);
       console.log(this.state.toDelete);
@@ -80,6 +83,7 @@ export default class Game extends React.Component {
       }
     }
 
+    //create a new Team and push it to the API via POST request
     createTeam(name, code) {
       if(name && code) {
         let request = {
@@ -167,6 +171,7 @@ export default class Game extends React.Component {
               <Notifications />
                 <h1>Toeggele</h1>
                     <Grid>
+                      //shows current teams and current match
                         <Row className="show-grid">
                             <h2>angemeldete Teams</h2>
                             <Col xs={12} md={8}>
@@ -184,6 +189,7 @@ export default class Game extends React.Component {
                                 </FormGroup>
                             </Col>
                         </Row>
+                        // form to delete team with code
                         <Row className="show-grid">
                             <h2>Abmelden</h2>
                             <FormGroup controlId="formDelete">
@@ -206,6 +212,7 @@ export default class Game extends React.Component {
                                 </Button>
                             </FormGroup>
                         </Row>
+                        //form to create team
                         <Row className="show-grid">
                             <h2>Anmelden</h2>
                             <FormGroup controlId="formCreate">
@@ -229,6 +236,7 @@ export default class Game extends React.Component {
                                 </Button>
                             </FormGroup>
                         </Row>
+                        //form to change master code
                         <Row className="show-grid">
                             <h2>Master Code aendern</h2>
                             <FormGroup controlId="fromChange">
