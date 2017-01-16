@@ -45,7 +45,7 @@ export default class Home extends React.Component {
               return <Panel
                 eventKey={event.id}
                 header={event.name}>
-                <ListGroup >
+                <ListGroup>
                   <ListGroupItem header="Startet">{event.start}</ListGroupItem>
                   <ListGroupItem header="Ended">{event.end}</ListGroupItem>
                   <ListGroupItem header="Beschreibung">{event.description}</ListGroupItem>
