@@ -18,6 +18,10 @@
   font-size: large;
 }
 
+.home {
+  font-size: 15px;
+  font-weight: 200;
+}
 
 .drinkTable{
   table-layout: fixed;
