@@ -7,7 +7,6 @@ const NOVUM_LOUNGE = {
   lng: 8.210647
 };
 
-
 export default class WhereAreWe extends React.Component {
   constructor() {
     super();
@@ -18,7 +17,6 @@ export default class WhereAreWe extends React.Component {
       ownPosi: null,
       infoWindow: null,
     };
-    this.panToLounge = this.panToLounge.bind(this);
     this.panToMe = this.panToMe.bind(this);
     this.handleLocationError = this.handleLocationError.bind(this);
     this.setUserLocation = this.setUserLocation.bind(this);
@@ -48,12 +46,13 @@ export default class WhereAreWe extends React.Component {
       ),
     });
   }
+componentDidUpdate() {
+  // Move the map to center on the novum lounge and set a marker
 
-// Move the map to center on the novum lounge and set a marker
-  panToLounge() {
     this.state.map.panTo(NOVUM_LOUNGE);
     this.state.marker.setMap(this.state.map);
-  }
+
+}
 
 // try to get location from client and set a marker
   panToMe() {
@@ -142,13 +141,12 @@ export default class WhereAreWe extends React.Component {
             <Jumbotron>
               <h1>{this.state.Title}</h1>
               <ButtonToolbar>
-                <Button onClick={this.panToLounge}>Locate Novum Lounge</Button>
                 <Button onClick={this.panToMe}>Locate me</Button>
                 {directionButton}
               </ButtonToolbar>
               <div className="map-responsive" ref="map" style={mapStyle}>Error I should be a map!</div>
-              {/*<div ref="panel"></div>*/}
             </Jumbotron>
           );
         }
       }
+      
