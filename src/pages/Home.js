@@ -41,10 +41,12 @@ export default class Home extends React.Component {
           </ListGroup>
           <h2>{this.state.SubtitleEvents}</h2>
           <PanelGroup accordion>
-            {this.state.Events.map(event => {
+            {this.state.Events.map(function (event, index) {
               return <Panel
                 eventKey={event.id}
-                header={event.name}>
+                header={event.name}
+                key={index}
+              >
                 <ListGroup>
                   <ListGroupItem header="Startet">{event.start}</ListGroupItem>
                   <ListGroupItem header="Ended">{event.end}</ListGroupItem>

@@ -9,13 +9,18 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 200px;
   padding: 20px;
   color: white;
+  margin-bottom: 10px;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.TabSpace {
+  margin-bottom: 10px;
 }
 
 

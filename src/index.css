@@ -20,8 +20,45 @@ body {
     height:100%;
     width:100%;
 }
-
+/* Damit wenn der Curser ueber die Schrifft im Accordion sich aendert */
+.panel-heading a {
+    cursor: pointer;
+}
+/* Damit die Tabellen Zellen alle die gleiche Groesse haben */
 .drinkTable{
     table-layout: fixed;
     width: 100%;
+}
+/* Damit die Navigations Tabs nicht direkt angebunden sind an das untere Feld */
+.btn-group-justified {
+    margin-bottom: 10px;
+}
+/* Damit die Schrifft bei den Eventdetails nicht so gross ist */
+.list-group-item-text {
+    font-size: 15px !important;
+}
+/* Damit zwischen den Accordion Elementen ein Abstand besteht */
+.panel-group .panel {
+    margin-bottom: 10px !important;
+}
+/* die Folgenden 3 Sind anpassungen damit mehr Abstand zwischen den verschiedenen Elementen besteht */
+h1 {
+    margin-bottom: 30px !important;
+}
+
+h2 {
+    margin-bottom: 20px !important;
+}
+
+p {
+    margin-bottom: 20px !important;
+}
+
+/* Damit zwischen den FormControl ein Abstand besteht */
+.form-control {
+    margin-bottom: 15px;
+}
+
+.btn-toolbar {
+    margin-bottom: 10px;
 }

@@ -16,10 +16,10 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Lounge Companion</h2>
+          <h1>Lounge Companion</h1>
         </div>
         <div className="container-fluid">
-        <Tabs selected={0}>
+        <Tabs selected={0} >
           <Tab label="Home">
             <div className="content" ><Home /></div>
           </Tab>

@@ -38,7 +38,7 @@ export default class Drinks extends React.Component {
         <Accordion>
           {this.state.DrinksCategory.map(cat => {
             //create an expandable Table for each drinkcategory
-            return <Panel header={cat.name} eventKey={cat.id}>
+            return <Panel header={cat.name} eventKey={cat.id} key={cat.id}  >
               <Table responsive className="drinkTable" >
                 <tbody>
                   {this.state.DrinksServer.map(drink => {

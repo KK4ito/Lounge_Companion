@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Jumbotron, ListGroup, ListGroupItem, FormControl, FormGroup, ControlLabel, Button, Grid, Row, Col } from 'react-bootstrap';
+import { Jumbotron, ListGroup, ListGroupItem, FormControl, FormGroup, Button, Grid, Row, Col } from 'react-bootstrap';
 import Notifications, {notify} from 'react-notify-toast';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -247,8 +247,9 @@ export default class Game extends React.Component {
                     <Grid>
                       {/* shows current teams and current match */}
                         <Row className="show-grid">
-                            <h2>angemeldete Teams</h2>
-                            <Col xs={12} md={8}>
+
+                            <Col className="col-md-6">
+                                <h2>angemeldete Teams</h2>
                                 <ListGroup>
                                     {this.state.Teams.map(function (team, index) {
                                         if (index !== 0)
@@ -256,9 +257,9 @@ export default class Game extends React.Component {
                                     }, this)}
                                 </ListGroup>
                             </Col>
-                            <Col xs={6} md={4}>
+                            <Col className="col-md-6">
                                <FormGroup>
-                                   <ControlLabel>Zurzeit spielt:</ControlLabel>
+                                   <h2>Zurzeit spielt</h2>
                                   {playingTeam}
                                    <FormControl.Static>Das Team, welches verloren hat, meldet sich ab</FormControl.Static>
                                 </FormGroup>
@@ -275,7 +276,7 @@ export default class Game extends React.Component {
                                     value={this.state.formDeleteValue}
                                     onChange={this.onChangeDelete}
                                 />
-                              <br />{captchaDeleteTeam}<br />
+                              {captchaDeleteTeam}
                                 <Button disabled={!this.state.captchaOK} onClick={() => this.deleteTeam(this.state.formDeleteValue)}>
                                     Abmelden
                                 </Button>
@@ -292,14 +293,14 @@ export default class Game extends React.Component {
                                     value={this.state.formCreateName}
                                     onChange={this.onChangeCreateName}
                                 />
-                              <br />
+
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
                                     value={this.state.formCreateCode}
                                     onChange={this.onChangeCreateCode}
                                 />
-                                <br />{captchaCreateTeam}<br />
+                                {captchaCreateTeam}
                               <Button disabled={!this.state.captchaOK} onClick={() => this.createTeam(this.state.formCreateName, this.state.formCreateCode)}>
                                     Anmelden
                                 </Button>
@@ -315,14 +316,13 @@ export default class Game extends React.Component {
                                     value={this.state.OldCode}
                                     onChange={this.onChangeOldCode}
                                 />
-                              <br />
                                 <FormControl
                                     type="password"
                                     placeholder="neuer Master Code"
                                     value={this.state.NewCode}
                                     onChange={this.onChangeCode}
                                 />
-                              <br />{captchaChangeCode}<br />
+                              {captchaChangeCode}
                               <Button disabled={!this.state.captchaOK} onClick={() =>  this.changeMaster(this.state.OldCode, this.state.NewCode)}>
                                 Code anpassen
                                 </Button>
