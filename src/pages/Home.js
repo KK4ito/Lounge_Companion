@@ -29,7 +29,7 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <Jumbotron bsClass="home">
+      <Jumbotron>
         <h1>{this.state.Title}</h1>
         <p>{this.state.Description}</p>
         <h2>{this.state.SubtitleOpen}</h2>
