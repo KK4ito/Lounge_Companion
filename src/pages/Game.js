@@ -17,8 +17,8 @@ export default class Game extends React.Component {
             url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php/teams',
             Teams: [],
             toDelete: null,
-            NewCode: null,
-            OldCode: null,
+            NewCode: '',
+            OldCode: '',
             formDeleteValue: '',
             formCreateName: '',
             formCreateCode: '',
@@ -73,6 +73,7 @@ export default class Game extends React.Component {
           if(output) {
             notify.show('Team gelöscht', 'success');
             recaptchaInstance.reset();
+            this.setState({captchaOK: false});
             this.setState({formDeleteValue: ''});
             fetch(this.state.url, {
                 method: 'GET',
@@ -115,62 +116,123 @@ export default class Game extends React.Component {
 
     changeMaster(oldCode, newCode) {
       if (oldCode && newCode) {
-        fetch(this.state.url)
-        .then(response => response.json())
-        .then(json => {
-            let storedCode = oldCode && json[0].code;
-        });
-
+            // check code input for master code, which is stored in the master team
+            let storedCode = oldCode === this.state.Teams[0].code;
+            console.log(storedCode);
+            this.setState(
+              {
+                NewCode: '',
+                OldCode: '',
+              }
+            );
       } else {
         notify.show('Missing input', 'warning');
       }
     }
 
     onChangeDelete(e) {
-      this.setState({ formDeleteValue: e.target.value });
+      this.setState(
+        {
+        formDeleteValue: e.target.value,
+        formCreateCode: '',
+        formCreateName: '',
+        NewCode: '',
+        OldCode: ''
+        }
+      );
     }
 
     onChangeCreateCode(e) {
-      this.setState({ formCreateCode: e.target.value });
+      this.setState(
+        {
+        formDeleteValue: '',
+        formCreateCode: e.target.value,
+        NewCode: '',
+        OldCode: ''
+        }
+      );
     }
 
     onChangeCreateName(e) {
-      this.setState({ formCreateName: e.target.value });
+      this.setState(
+        {
+        formDeleteValue: '',
+        formCreateName: e.target.value,
+        NewCode: '',
+        OldCode: ''
+        }
+      );
     }
 
     onChangeCode(e) {
-      this.setState({ NewCode: e.target.value });
+      this.setState(
+        {
+        formDeleteValue: '',
+        formCreateCode: '',
+        formCreateName: '',
+        NewCode: e.target.value,
+        }
+      );
     }
 
     onChangeOldCode(e){
-        this.setState({ OldCode: e.target.value });
+        this.setState(
+          {
+          formDeleteValue: '',
+          formCreateCode: '',
+          formCreateName: '',
+          OldCode: e.target.value
+          }
+        );
     }
 
     render() {
+      // Prepare element for clicked team
       let clickedTeam = null;
       if (this.state.toDelete) {
           clickedTeam = <FormControl.Static >{this.state.toDelete.name}</FormControl.Static>;
       } else {
           clickedTeam = <FormControl.Static >Hier sollte das angeklickte Team stehen</FormControl.Static>;
       }
+
+      // Prepare element for first two playing teams
       let playingTeam = null;
-      if (this.state.Teams[0] && this.state.Teams[1]) {
-          playingTeam = <FormControl.Static>{this.state.Teams[0].name} vs {this.state.Teams[1].name}</FormControl.Static>;
+      if (this.state.Teams[1] && this.state.Teams[2]) {
+          playingTeam = <FormControl.Static>{this.state.Teams[1].name} vs {this.state.Teams[2].name}</FormControl.Static>;
       } else {
-        playingTeam = <FormControl.Static>Platzhalter</FormControl.Static>;
+        playingTeam = <FormControl.Static>Nicht genügend Teams vorhanden</FormControl.Static>;
+      }
+
+      // Prepare captcha elements
+      let captchaObject = <center><ReCAPTCHA ref={ e => recaptchaInstance = e} sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug" onChange={this.captchaChanged}/></center>;
+      let captchaCreateTeam = null;
+      let captchaDeleteTeam = null;
+      let captchaChangeCode = null;
+      if (this.state.NewCode && this.state.OldCode){
+        captchaChangeCode = captchaObject;
+        captchaDeleteTeam = null;
+        captchaCreateTeam = null;
+      } else if (this.state.formDeleteValue){
+        captchaChangeCode = null;
+        captchaDeleteTeam = captchaObject;
+        captchaCreateTeam = null;
+      } else if (this.state.formCreateName && this.state.formCreateCode) {
+        captchaChangeCode = null;
+        captchaDeleteTeam = null;
+        captchaCreateTeam = captchaObject;
       }
         return (
             <Jumbotron>
               <Notifications />
                 <h1>Toeggele</h1>
                     <Grid>
-                      //shows current teams and current match
+                      {/* shows current teams and current match */}
                         <Row className="show-grid">
                             <h2>angemeldete Teams</h2>
                             <Col xs={12} md={8}>
                                 <ListGroup>
                                     {this.state.Teams.map(function (team, index) {
-                                        if (index != 0)
+                                        if (index !== 0)
                                         return <ListGroupItem key={index} onClick={() => this.setState({toDelete: team})}>{team.name}</ListGroupItem>
                                     }, this)}
                                 </ListGroup>
@@ -183,7 +245,7 @@ export default class Game extends React.Component {
                                 </FormGroup>
                             </Col>
                         </Row>
-                        // form to delete team with code
+                        {/* form to delete team with code */}
                         <Row className="show-grid">
                             <h2>Abmelden</h2>
                             <FormGroup controlId="formDelete">
@@ -194,19 +256,13 @@ export default class Game extends React.Component {
                                     value={this.state.formDeleteValue}
                                     onChange={this.onChangeDelete}
                                 />
-                              <br />
-                                <ReCAPTCHA
-                                  ref={ e => recaptchaInstance = e}
-                                  sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
-                                  onChange={this.captchaChanged}
-                                  />
-                                <br />
+                              <br />{captchaDeleteTeam}<br />
                                 <Button disabled={!this.state.captchaOK} onClick={() => this.deleteTeam(this.state.formDeleteValue)}>
                                     Abmelden
                                 </Button>
                             </FormGroup>
                         </Row>
-                        //form to create team
+                        {/* form to create team */}
                         <Row className="show-grid">
                             <h2>Anmelden</h2>
                             <FormGroup controlId="formCreate">
@@ -224,30 +280,31 @@ export default class Game extends React.Component {
                                     value={this.state.formCreateCode}
                                     onChange={this.onChangeCreateCode}
                                 />
-                                <br />
-                              <Button onClick={() => this.createTeam(this.state.formCreateName, this.state.formCreateCode)}>
+                                <br />{captchaCreateTeam}<br />
+                              <Button disabled={!this.state.captchaOK} onClick={() => this.createTeam(this.state.formCreateName, this.state.formCreateCode)}>
                                     Anmelden
                                 </Button>
                             </FormGroup>
                         </Row>
-                        //form to change master code
+                        {/* form to change master code */}
                         <Row className="show-grid">
                             <h2>Master Code aendern</h2>
                             <FormGroup controlId="fromChange">
                                 <FormControl
-                                    type="text"
+                                    type="password"
                                     placeholder="alter Master Code"
                                     value={this.state.OldCode}
                                     onChange={this.onChangeOldCode}
                                 />
                               <br />
                                 <FormControl
-                                    type="text"
+                                    type="password"
                                     placeholder="neuer Master Code"
                                     value={this.state.NewCode}
                                     onChange={this.onChangeCode}
                                 />
-                              <Button onClick={() =>  this.changeMaster(this.state.OldCode, this.state.NewCode)}>
+                              <br />{captchaChangeCode}<br />
+                              <Button disabled={!this.state.captchaOK} onClick={() =>  this.changeMaster(this.state.OldCode, this.state.NewCode)}>
                                 Code anpassen
                                 </Button>
                             </FormGroup>

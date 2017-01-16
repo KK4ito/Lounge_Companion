@@ -30,13 +30,13 @@ export default class WhereAreWe extends React.Component {
     this.setState({
       map: new window.google.maps.Map(this.refs.map,
         {
-          center: NOUVUM_LOUNGE,
+          center: NOVUM_LOUNGE,
           zoom: 16
         }
       ),
       marker: new window.google.maps.Marker(
         {
-          position: NOUVUM_LOUNGE,
+          position: NOVUM_LOUNGE,
           map: this.state.map,
           title: 'Novum Lounge'
         }
@@ -51,7 +51,7 @@ export default class WhereAreWe extends React.Component {
 
 // Move the map to center on the novum lounge and set a marker
   panToLounge() {
-    this.state.map.panTo(NOUVUM_LOUNGE);
+    this.state.map.panTo(NOVUM_LOUNGE);
     this.state.marker.setMap(this.state.map);
   }
 

@@ -21,11 +21,6 @@ body {
     width:100%;
 }
 
-.contentText {
-    font-size: 15px;
-    font-weight: 200;
-}
-
 .drinkTable{
     table-layout: fixed;
     width: 100%;
