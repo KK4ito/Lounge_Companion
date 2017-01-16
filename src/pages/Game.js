@@ -15,6 +15,7 @@ export default class Game extends React.Component {
             Teams: [],
             toDelete: null,
             NewCode: null,
+            OldCode: null,
             formDeleteValue: '',
             formCreateName: '',
             formCreateCode: '',
@@ -28,6 +29,7 @@ export default class Game extends React.Component {
         this.onChangeCreateCode = this.onChangeCreateCode.bind(this);
         this.onChangeCreateName = this.onChangeCreateName.bind(this);
         this.onChangeCode = this.onChangeCode.bind(this);
+        this.onChangeOldCode = this.onChangeOldCode.bind(this);
     }
 
     componentDidMount(){
@@ -117,7 +119,11 @@ export default class Game extends React.Component {
     }
 
     onChangeCode(e) {
-      this.setState({ newCode: e.target.value });
+      this.setState({ NewCode: e.target.value });
+    }
+
+    onChangeOldCode(e){
+        this.setState({ OldCode: e.target.value });
     }
 /*
     getOldestTeams(){
@@ -234,11 +240,17 @@ export default class Game extends React.Component {
                             <FormGroup controlId="fromChange">
                                 <FormControl
                                     type="text"
+                                    placeholder="alter Master Code"
+                                    value={this.state.OldCode}
+                                    onChange={this.onChangeOldCode}
+                                />
+                                <FormControl
+                                    type="text"
                                     placeholder="neuer Master Code"
-                                    value={this.state.newCode}
+                                    value={this.state.NewCode}
                                     onChange={this.onChangeCode}
                                 />
-                              <Button onClick={() =>  this.changeMaster(this.state.newCode)}>
+                              <Button onClick={() =>  this.changeMaster(this.state.NewCode)}>
                                 Code anpassen
                                 </Button>
                             </FormGroup>
