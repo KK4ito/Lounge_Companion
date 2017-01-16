@@ -1,9 +1,9 @@
 import React from 'react';
-import { Jumbotron, Accordion, Panel, Table} from 'react-bootstrap';
+import { Jumbotron, Accordion, Panel, Table } from 'react-bootstrap';
 
 export default class Drinks extends React.Component {
-  constructor(props){
-    super(props);
+  constructor( props ) {
+    super( props );
     this.state = {
       Title: 'Drinks',
       Drinks: [],
@@ -13,51 +13,66 @@ export default class Drinks extends React.Component {
     };
   }
   // fetch categories and drinks from API
-  componentDidMount(){
-    fetch(this.state.url + '/drinkcategories', {
+  componentDidMount() {
+    fetch( this.state.url + '/drinkcategories', {
       method: 'GET'
-    })
-    .then(response => response.json())
-    .then(json => {
-      this.setState({DrinksCategory: json});
-    });
+    } )
+      .then( response => response.json() )
+      .then( json => {
+        this.setState( {
+          DrinksCategory: json
+        } );
+      } );
 
-    fetch(this.state.url + '/drinks', {
+    fetch( this.state.url + '/drinks', {
       method: 'GET'
-    })
-    .then(response=> response.json())
-    .then(json => {
-      this.setState({DrinksServer: json});
-    });
+    } )
+      .then( response => response.json() )
+      .then( json => {
+        this.setState( {
+          DrinksServer: json
+        } );
+      } );
   }
 
   render() {
     return (
-      <Jumbotron>
-        <h1>{this.state.Title}</h1>
-        <Accordion>
-          {this.state.DrinksCategory.map(cat => {
+    <Jumbotron>
+      <h1>{ this.state.Title }</h1>
+      <Accordion>
+        { this.state.DrinksCategory.map( cat => {
             //create an expandable Table for each drinkcategory
-            return <Panel header={cat.name} eventKey={cat.id} key={cat.id}  >
-              <Table responsive className="drinkTable" >
-                <tbody>
-                  {this.state.DrinksServer.map(drink => {
-                    if(drink.categoryid === cat.id){
-                      return (
-                        <tr key={drink.id}>
-                          <td>{drink.name}</td>
-                          <td>{drink.size}</td>
-                          <td>{drink.price}.-</td>
-                        </tr>
-                      )
-                    }
-                  })}
-                </tbody>
-              </Table>
-            </Panel>
-          })}
-        </Accordion>
-      </Jumbotron>
+            return <Panel
+                          header={ cat.name }
+                          eventKey={ cat.id }
+                          key={ cat.id }>
+                     <Table
+                            responsive
+                            className="drinkTable">
+                       <tbody>
+                         { this.state.DrinksServer.map( drink => {
+                             if ( drink.categoryid === cat.id ) {
+                               return (
+                               <tr key={ drink.id }>
+                                 <td>
+                                   { drink.name }
+                                 </td>
+                                 <td>
+                                   { drink.size }
+                                 </td>
+                                 <td>
+                                   { drink.price }.-
+                                 </td>
+                               </tr>
+                               )
+                             }
+                           } ) }
+                       </tbody>
+                     </Table>
+                   </Panel>
+          } ) }
+      </Accordion>
+    </Jumbotron>
     );
   }
 }
