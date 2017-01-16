@@ -76,7 +76,7 @@ export default class Game extends React.Component {
           }
         }
       )} else {
-        notify.show('Falsche Code', 'error');
+        notify.show('Error Code', 'error');
       }
     }
 
@@ -164,7 +164,9 @@ export default class Game extends React.Component {
       }
         return (
             <Jumbotron>
-              <Notifications />
+              <div className="toastBox">
+              <Notifications className="toastStyle"/>
+              </div>
                 <h1>Toeggele</h1>
                     <Grid>
                         <Row className="show-grid">
@@ -187,7 +189,7 @@ export default class Game extends React.Component {
                         <Row className="show-grid">
                             <h2>Abmelden</h2>
                             <FormGroup controlId="formDelete">
-                                {playingTeam}
+                                {clickedTeam}
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
