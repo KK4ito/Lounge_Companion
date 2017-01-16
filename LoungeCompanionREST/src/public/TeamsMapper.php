@@ -53,9 +53,9 @@ class TeamsMapper
         return $result["id"];
     }
 
-    function putTeam($id,$team){
-        $update = $this->database->prepare('UPDATE webec.teams SET code=:code WHERE id=:id');
-        $update->bindParam('code',$team['code']);
+    function putTeam($id,$code){
+        $update = $this->database->prepare('UPDATE webec.teams SET (code=:code) WHERE id=:id');
+        $update->bindParam('code',$code);
         $update-> bindParam('id',$id);
         $this -> database->beginTrainsaction();
         $successUpdate = $update->execute();

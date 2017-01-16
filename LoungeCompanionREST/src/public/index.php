@@ -155,9 +155,9 @@ $app->delete('/drinkcategories/{id}', function (Request $request,Response $respo
 $app->put('/teams/{id}',function (Request $request, Response $response){
     $id = $request->getAttribute('id');
     $data = $request ->getParsedBody();
-    $team['code'] = filter_var($data['code'], FILTER_SANITIZE_STRING);
+    $code = filter_var($data['code'], FILTER_SANITIZE_STRING);
     $mapper = new TeamsMapper($this->db);
-    $newTeam = $mapper->putTeam($id,$team);
+    $newTeam = $mapper->putTeam($id,$code);
     $response->getBody()->write(json_encode($newTeam),true);
     return $response;
 });
