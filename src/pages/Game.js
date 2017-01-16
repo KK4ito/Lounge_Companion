@@ -4,6 +4,9 @@ import { Jumbotron, ListGroup, ListGroupItem, FormControl, FormGroup, ControlLab
 import Notifications, {notify} from 'react-notify-toast';
 import ReCAPTCHA from 'react-google-recaptcha';
 
+// Variable for captcha instance, needed for resetting
+let recaptchaInstance;
+
 export default class Game extends React.Component {
 
     constructor(props){
@@ -15,6 +18,7 @@ export default class Game extends React.Component {
             Teams: [],
             toDelete: null,
             NewCode: null,
+            OldCode: null,
             formDeleteValue: '',
             formCreateName: '',
             formCreateCode: '',
@@ -28,6 +32,7 @@ export default class Game extends React.Component {
         this.onChangeCreateCode = this.onChangeCreateCode.bind(this);
         this.onChangeCreateName = this.onChangeCreateName.bind(this);
         this.onChangeCode = this.onChangeCode.bind(this);
+        this.onChangeOldCode = this.onChangeOldCode.bind(this);
     }
 
     // fetch teams from API
@@ -59,8 +64,6 @@ export default class Game extends React.Component {
 
     //check code of team to delete and delete if it matches
     deleteTeam(value) {
-      console.log(value);
-      console.log(this.state.toDelete);
       if(this.state.toDelete && (value === this.state.toDelete.code)) {
         fetch(this.state.url + '/' + this.state.toDelete.id, {
           method: 'DELETE',
@@ -69,17 +72,17 @@ export default class Game extends React.Component {
         .then(output => {
           if(output) {
             notify.show('Team gelöscht', 'success');
+            recaptchaInstance.reset();
+            this.setState({formDeleteValue: ''});
             fetch(this.state.url, {
                 method: 'GET',
             })
                 .then(response => response.json())
-                .then(json => {
-                    this.setState({Teams: json})
-                });
+                .then(json => this.setState({Teams: json}))
           }
         }
       )} else {
-        notify.show('Falsche Code', 'error');
+        notify.show('Error Code', 'error');
       }
     }
 
@@ -100,12 +103,27 @@ export default class Game extends React.Component {
         fetch(this.state.url, request)
         .then(res => res.json())
         .then(output => this.setState({Teams: this.state.Teams.concat([output])}))
+        .then( () => this.setState(
+          {
+            formCreateCode: '',
+            formCreateName: '',
+          }
+        ))
         .then( () => notify.show('Team erstellt', 'success'));
       }
     }
 
-    changeMaster(value) {
-      console.log(value);
+    changeMaster(oldCode, newCode) {
+      if (oldCode && newCode) {
+        fetch(this.state.url)
+        .then(response => response.json())
+        .then(json => {
+            let storedCode = oldCode && json[0].code;
+        });
+
+      } else {
+        notify.show('Missing input', 'warning');
+      }
     }
 
     onChangeDelete(e) {
@@ -121,37 +139,12 @@ export default class Game extends React.Component {
     }
 
     onChangeCode(e) {
-      this.setState({ newCode: e.target.value });
+      this.setState({ NewCode: e.target.value });
     }
-/*
-    getOldestTeams(){
-        console.log("startet get oldest");
-        console.log(this.state.Teams.length);
-        console.log(this.state.Teams);
-        console.log(this.state.Teams[0].entrytime < this.state.Teams[1].entrytime);
-        if (this.state.Teams.length < 2){
-            return 'Nicht genug Spieler angemeldet';
-        }
-        else if (this.state.Teams.length == 2){
-            return (this.state.Teams[0].name + ' vs ' + this.state.Teams[1].name);
-        }
-        else {
-            var t1 = this.state.Teams[0];
-            var t2 = this.state.Teams[1];
-            for (var team in this.state.Teams) {
-                if (t2.entrytime < t1.entrytime){
-                    if (team.entrytime < t2.entrytime){
-                        t2 = team;
-                    }
-                } else {
-                    if (team.entrytime < t1.entrytime){
-                        t1 = team;
-                    }
-                }
-            }
-            return (t1.name + ' vs ' + t2.name);
-        }
-    }*/
+
+    onChangeOldCode(e){
+        this.setState({ OldCode: e.target.value });
+    }
 
     render() {
       let clickedTeam = null;
@@ -177,6 +170,7 @@ export default class Game extends React.Component {
                             <Col xs={12} md={8}>
                                 <ListGroup>
                                     {this.state.Teams.map(function (team, index) {
+                                        if (index != 0)
                                         return <ListGroupItem key={index} onClick={() => this.setState({toDelete: team})}>{team.name}</ListGroupItem>
                                     }, this)}
                                 </ListGroup>
@@ -193,7 +187,7 @@ export default class Game extends React.Component {
                         <Row className="show-grid">
                             <h2>Abmelden</h2>
                             <FormGroup controlId="formDelete">
-                                {playingTeam}
+                                {clickedTeam}
                                 <FormControl
                                     type="text"
                                     placeholder="Gib deinen Code ein"
@@ -202,7 +196,7 @@ export default class Game extends React.Component {
                                 />
                               <br />
                                 <ReCAPTCHA
-                                  ref="recaptcha"
+                                  ref={ e => recaptchaInstance = e}
                                   sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
                                   onChange={this.captchaChanged}
                                   />
@@ -242,11 +236,18 @@ export default class Game extends React.Component {
                             <FormGroup controlId="fromChange">
                                 <FormControl
                                     type="text"
+                                    placeholder="alter Master Code"
+                                    value={this.state.OldCode}
+                                    onChange={this.onChangeOldCode}
+                                />
+                              <br />
+                                <FormControl
+                                    type="text"
                                     placeholder="neuer Master Code"
-                                    value={this.state.newCode}
+                                    value={this.state.NewCode}
                                     onChange={this.onChangeCode}
                                 />
-                              <Button onClick={() =>  this.changeMaster(this.state.newCode)}>
+                              <Button onClick={() =>  this.changeMaster(this.state.OldCode, this.state.NewCode)}>
                                 Code anpassen
                                 </Button>
                             </FormGroup>

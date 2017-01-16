@@ -21,13 +21,13 @@ class App extends Component {
         <div className="container-fluid">
         <Tabs selected={0}>
           <Tab label="Home">
-            <Home />
+            <div className="content" ><Home /></div>
           </Tab>
           <Tab label="Drinks">
-            <Drinks />
+            <div className="content" ><Drinks /></div>
           </Tab>
           <Tab label="Toeggele">
-            <Game />
+            <div className="content" ><Game /></div>
           </Tab>
           <Tab label="Map">
             <WhereAreWe />

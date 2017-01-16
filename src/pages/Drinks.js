@@ -39,7 +39,7 @@ export default class Drinks extends React.Component {
           {this.state.DrinksCategory.map(cat => {
             //create an expandable Table for each drinkcategory
             return <Panel header={cat.name} eventKey={cat.id}>
-              <Table responsive bsClass="drinkTable" >
+              <Table responsive className="drinkTable" >
                 <tbody>
                   {this.state.DrinksServer.map(drink => {
                     if(drink.categoryid === cat.id){
