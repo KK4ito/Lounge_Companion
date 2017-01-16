@@ -20,11 +20,3 @@ body {
     height:100%;
     width:100%;
 }
-.toastBox {
-  position: relative;
-}
-.toastStyle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}

@@ -164,9 +164,7 @@ export default class Game extends React.Component {
       }
         return (
             <Jumbotron>
-              <div className="toastBox">
-              <Notifications className="toastStyle"/>
-              </div>
+              <Notifications />
                 <h1>Toeggele</h1>
                     <Grid>
                         <Row className="show-grid">
