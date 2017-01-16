@@ -53,9 +53,9 @@ class TeamsMapper
         return $result["id"];
     }
 
-    function putTeam($id,$code){
+    function putTeam($id,$team){
         $update = $this->database->prepare('UPDATE webec.teams SET code=:code WHERE id=:id');
-        $update->bindParam('code',$code);
+        $update->bindParam('code',$team['code']);
         $update-> bindParam('id',$id);
         $this -> database->beginTrainsaction();
         $successUpdate = $update->execute();
@@ -65,7 +65,7 @@ class TeamsMapper
             return $result;
         }else{
             $this->database->rollback();
-            return = 'could not change code of team';
+            return 'could not change code of team';
         }
     }
 

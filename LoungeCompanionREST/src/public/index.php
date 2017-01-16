@@ -1,7 +1,6 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-
 require '../../vendor/autoload.php';
 spl_autoload_register(function ($class_name) {
     include $class_name . '.php';
@@ -9,19 +8,16 @@ spl_autoload_register(function ($class_name) {
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
-
-$config['db']['host']   = "64.137.190.213";
+$config['db']['host']   = "localhost";
 $config['db']['user']   = "root";
 $config['db']['pass']   = "webec_2016";
 $config['db']['dbname'] = "webec";
-
 
 $app = new \Slim\App(["settings" => $config]);
 spl_autoload("EventsMapper");
 spl_autoload("DrinksMapper");
 spl_autoload("DrinkcategoriesMapper");
 spl_autoload("TeamsMapper");
-
 
 $container = $app->getContainer();
 $container['logger'] = function($c) {
@@ -39,9 +35,6 @@ $container['db'] = function ($c) {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
 };
-$app->options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
 
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
@@ -50,12 +43,11 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
-	    ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        ->withHeader('Content-Type', 'application/json')
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
-
 
 $app->get('/events', function (Request $request, Response $response) {
     $mapper = new EventsMapper($this->db);
@@ -85,8 +77,6 @@ $app->get('/drinkcategories', function (Request $request, Response $response) {
     return $response;
 });
 
-
-
 $app->post('/events', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $event['name'] = filter_var($data['name'], FILTER_SANITIZE_STRING);
@@ -104,7 +94,7 @@ $app->post('/teams', function (Request $request, Response $response) {
     $team['name'] = filter_var($data['name'], FILTER_SANITIZE_STRING);
     $team['code'] = filter_var($data['code'], FILTER_SANITIZE_STRING);
     $mapper = new TeamsMapper($this->db);
-    $teamID=$mapper->createteam($team);
+    $teamID =$mapper->createteam($team);
     $response->getBody()->write(json_encode($teamID),true);
     return $response;
 });
@@ -130,29 +120,6 @@ $app->post('/drinkcategories', function (Request $request, Response $response) {
     return $response;
 });
 
-
-$app->post('/teams', function (Request $request, Response $response) {
-    $data = $request->getParsedBody();
-    $team['name'] = filter_var($data['name'], FILTER_SANITIZE_STRING);
-    $team['code'] = filter_var($data['code'], FILTER_SANITIZE_STRING);
-    $mapper = new TeamsMapper($this->db);
-    $teamID =$mapper->createteam($team);
-    $response->getBody()->write(json_encode($teamID),true);
-    return $response;
-});
-
-
-$app->put('/teams/{id}',function (Request $request, Response $response){
-    $id = $request->getAttribute('id');
-    $data = $request ->getParsedBody();
-    $code = filter_var($data['code'],FILTER_SANITIZE_STRING;
-    $mapper = new TeamsMapper($this->db);
-    $newTeam = $mapper->putTeam($id,$code);
-    $response->getBody()->write(json_encode($newTeam),true));
-    return $response;
-}
-
-
 $app->delete('/events/{id}', function (Request $request,Response $response) {
     $id = $request->getAttribute('id');
     $mapper = new EventsMapper($this->db);
@@ -168,6 +135,7 @@ $app->delete('/teams/{id}', function (Request $request,Response $response) {
     $response->getBody()->write(json_encode($result),true);
     return $response;
 });
+
 $app->delete('/drinks/{id}', function (Request $request,Response $response) {
     $id = $request->getAttribute('id');
     $mapper = new DrinksMapper($this->db);
@@ -175,6 +143,7 @@ $app->delete('/drinks/{id}', function (Request $request,Response $response) {
     $response->getBody()->write(json_encode($result),true);
     return $response;
 });
+
 $app->delete('/drinkcategories/{id}', function (Request $request,Response $response) {
     $id = $request->getAttribute('id');
     $mapper = new DrinkcategoriesMapper($this->db);
@@ -183,11 +152,14 @@ $app->delete('/drinkcategories/{id}', function (Request $request,Response $respo
     return $response;
 });
 
-$app->get('/hello/{name}', function (Request $request, Response $response) {
-    $name = $request->getAttribute('name');
-    $response->getBody()->write("Hello, $name");
-    $this->logger->addInfo("Response generated.");
-
+$app->put('/teams/{id}',function (Request $request, Response $response){
+    $id = $request->getAttribute('id');
+    $data = $request ->getParsedBody();
+    $team['code'] = filter_var($data['code'], FILTER_SANITIZE_STRING);
+    $mapper = new TeamsMapper($this->db);
+    $newTeam = $mapper->putTeam($id,$team);
+    $response->getBody()->write(json_encode($newTeam),true);
     return $response;
 });
+
 $app->run();
