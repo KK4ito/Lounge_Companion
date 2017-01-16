@@ -12,7 +12,6 @@ export default class Game extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            current: 'Gruppe 1 vs Gruppe 2',
             captchaOK: null,
             url: 'https://64.137.190.213/LoungeCompanionREST/src/public/index.php/teams',
             Teams: [],
@@ -22,7 +21,6 @@ export default class Game extends React.Component {
             formDeleteValue: '',
             formCreateName: '',
             formCreateCode: '',
-            alert: null,
         };
         this.captchaChanged = this.captchaChanged.bind(this);
         this.deleteTeam = this.deleteTeam.bind(this);
@@ -33,6 +31,7 @@ export default class Game extends React.Component {
         this.onChangeCreateName = this.onChangeCreateName.bind(this);
         this.onChangeCode = this.onChangeCode.bind(this);
         this.onChangeOldCode = this.onChangeOldCode.bind(this);
+        this.resetFields = this.resetFields.bind(this);
     }
 
     // fetch teams from API
@@ -62,9 +61,13 @@ export default class Game extends React.Component {
       }
     }
 
+    resetFields(){
+      recaptchaInstance.reset();
+      this.setState({captchaOK: false});
+    }
     //check code of team to delete and delete if it matches
     deleteTeam(value) {
-      if(this.state.toDelete && (value === this.state.toDelete.code)) {
+      if(this.state.toDelete && ((value === this.state.toDelete.code) || (value === this.state.Teams[0].code))) {
         fetch(this.state.url + '/' + this.state.toDelete.id, {
           method: 'DELETE',
         })
@@ -72,14 +75,14 @@ export default class Game extends React.Component {
         .then(output => {
           if(output) {
             notify.show('Team gelöscht', 'success');
-            recaptchaInstance.reset();
-            this.setState({captchaOK: false});
+            this.resetFields();
             this.setState({formDeleteValue: ''});
             fetch(this.state.url, {
                 method: 'GET',
             })
                 .then(response => response.json())
-                .then(json => this.setState({Teams: json}))
+                .then(json => this.setState({ Teams: json}))
+                .then( () => this.setState({ toDelete: null}));
           }
         }
       )} else {
@@ -104,13 +107,14 @@ export default class Game extends React.Component {
         fetch(this.state.url, request)
         .then(res => res.json())
         .then(output => this.setState({Teams: this.state.Teams.concat([output])}))
+        .then( () => this.resetFields())
         .then( () => this.setState(
           {
             formCreateCode: '',
             formCreateName: '',
           }
-        ))
-        .then( () => notify.show('Team erstellt', 'success'));
+        ));
+        notify.show('Team erstellt', 'success');
       }
     }
 
@@ -119,6 +123,21 @@ export default class Game extends React.Component {
             // check code input for master code, which is stored in the master team
             let storedCode = oldCode === this.state.Teams[0].code;
             console.log(storedCode);
+            let request = {
+              method: 'PUT',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                code: newCode,
+              }),
+            };
+            fetch(this.state.url + '/0', request)
+            .then(res => res.json())
+            .then(output => notify.show('Mastercode geändert', 'success'));
+
+            this.resetFields();
             this.setState(
               {
                 NewCode: '',

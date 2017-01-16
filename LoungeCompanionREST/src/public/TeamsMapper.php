@@ -54,19 +54,27 @@ class TeamsMapper
     }
 
     function putTeam($id,$code){
-        $update = $this->database->prepare('UPDATE webec.teams SET (code=:code) WHERE id=:id');
+        $update = $this->database->prepare('UPDATE webec.teams SET code=:code WHERE id=:id');
         $update->bindParam('code',$code);
         $update-> bindParam('id',$id);
-        $this -> database->beginTrainsaction();
+        $this -> database->beginTransaction();
         $successUpdate = $update->execute();
         if($successUpdate){
             $this->database->commit();
-            $result=$update->fetch();
-            return $result;
+	          $selection = $this->database->prepare('SELECT * FROM webec.teams WHERE id=:id');
+	          $selection -> bindParam('id', $id);
+            $this -> database->beginTransaction();
+            $successSelect = $selection->execute();
+            if ($successSelect) {
+                $this->database->commit();
+                $result = $selection->fetch();
+                return $result;
+            }
         }else{
             $this->database->rollback();
             return 'could not change code of team';
         }
+        return 'could not fetch Team';
     }
 
     // deletes the team with the chosen id
