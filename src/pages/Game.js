@@ -208,11 +208,11 @@ export default class Game extends React.Component {
     if ( this.state.toDelete ) {
       clickedTeam = < FormControl.Static>
                       { this.state.toDelete.name }
-                      < /FormControl.Static>;
+                      </FormControl.Static>;
     } else {
       clickedTeam = < FormControl.Static>
                       Hier sollte das angeklickte Team stehen
-                      < /FormControl.Static>;
+                      </FormControl.Static>;
     }
 
     // Prepare element for first two playing teams
@@ -221,11 +221,11 @@ export default class Game extends React.Component {
       playingTeam = < FormControl.Static>
                       { this.state.Teams[ 1 ].name } vs
                       { this.state.Teams[ 2 ].name }
-                      < /FormControl.Static>;
+                      </FormControl.Static>;
     } else {
       playingTeam = < FormControl.Static>
                       Nicht genügend Teams vorhanden
-                      < /FormControl.Static>;
+                      </FormControl.Static>;
     }
 
     // Prepare captcha elements
@@ -233,7 +233,9 @@ export default class Game extends React.Component {
                           < ReCAPTCHA
                                       ref={ e => recaptchaInstance = e }
                                       sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
-                                      onChange={ this.captchaChanged } />
+                                      onChange={ this.captchaChanged }
+                                      className="captchaMargin"
+                          />
                           </center>;
     let captchaCreateTeam = null;
     let captchaDeleteTeam = null;

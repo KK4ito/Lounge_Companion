@@ -62,3 +62,9 @@ p {
 .btn-toolbar {
     margin-bottom: 10px;
 }
+
+/* Damit zwischen den Captcha und den Forms ein grösserer Abstand besteht */
+.captchaMargin {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
