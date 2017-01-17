@@ -46,18 +46,9 @@ export default class Game extends React.Component {
 
   // check and verify captcha
   captchaChanged( value ) {
-    console.log( 'captchaChanged' );
-    console.log( value );
-    if ( value ) {
-      // verify Recaptcha without google api
-      this.setState( {
-        captchaOK: true
-      } );
-    } else {
-      this.setState( {
-        captchaOK: false
-      } );
-    }
+    this.setState( {
+      captchaOK: !!value
+    } );
   }
 
   resetFields() {
@@ -128,10 +119,11 @@ export default class Game extends React.Component {
   }
 
   changeMaster( oldCode, newCode ) {
-    if ( oldCode && newCode ) {
+    if (!oldCode || !newCode) {
+      notify.show( 'Missing input', 'warning' );
+      return;
+    }
       // check code input for master code, which is stored in the master team
-      let storedCode = oldCode === this.state.Teams[ 0 ].code;
-      console.log( storedCode );
       let request = {
         method: 'PUT',
         headers: {
@@ -151,9 +143,6 @@ export default class Game extends React.Component {
         NewCode: '',
         OldCode: '',
       } );
-    } else {
-      notify.show( 'Missing input', 'warning' );
-    }
   }
 
   onChangeDelete( e ) {
@@ -233,23 +222,7 @@ export default class Game extends React.Component {
                                       onChange={ this.captchaChanged }
                                       className="captchaMargin"
                           />
-                          </center>;
-    let captchaCreateTeam = null;
-    let captchaDeleteTeam = null;
-    let captchaChangeCode = null;
-    if ( this.state.NewCode && this.state.OldCode ) {
-      captchaChangeCode = captchaObject;
-      captchaDeleteTeam = null;
-      captchaCreateTeam = null;
-    } else if ( this.state.formDeleteValue ) {
-      captchaChangeCode = null;
-      captchaDeleteTeam = captchaObject;
-      captchaCreateTeam = null;
-    } else if ( this.state.formCreateName && this.state.formCreateCode ) {
-      captchaChangeCode = null;
-      captchaDeleteTeam = null;
-      captchaCreateTeam = captchaObject;
-    }
+                      </center>);
     return (
     <Jumbotron>
       <Notifications />
@@ -260,8 +233,7 @@ export default class Game extends React.Component {
           <Col className="col-md-6">
           <h2>angemeldete Teams</h2>
           <ListGroup>
-            { this.state.Teams.map( function ( team, index ) {
-                if ( index !== 0 )
+            { this.state.Teams.slice(1).map( function ( team, index ) {
                   return <ListGroupItem
                                         key={ index }
                                         onClick={ () => this.setState({toDelete: team})}>
@@ -290,7 +262,7 @@ export default class Game extends React.Component {
                          placeholder="Gib deinen Code ein"
                          value={ this.state.formDeleteValue }
                          onChange={ this.onChangeDelete } />
-            { captchaDeleteTeam }
+                       { this.state.formDeleteValue && captchaObject }
             <Button
                     disabled={ !this.state.captchaOK }
                     onClick={ () => this.deleteTeam( this.state.formDeleteValue ) }>
@@ -315,7 +287,7 @@ export default class Game extends React.Component {
                          placeholder="Gib deinen Code ein"
                          value={ this.state.formCreateCode }
                          onChange={ this.onChangeCreateCode } />
-            { captchaCreateTeam }
+                       { this.state.formCreateName && this.state.formCreateCode && captchaObject }
             <Button
                     disabled={ !this.state.captchaOK }
                     onClick={ () => this.createTeam( this.state.formCreateName, this.state.formCreateCode ) }>
@@ -337,7 +309,7 @@ export default class Game extends React.Component {
                          placeholder="neuer Master Code"
                          value={ this.state.NewCode }
                          onChange={ this.onChangeCode } />
-            { captchaChangeCode }
+                       { this.state.NewCode && this.state.OldCode && captchaObject }
             <Button
                     disabled={ !this.state.captchaOK }
                     onClick={ () => this.changeMaster( this.state.OldCode, this.state.NewCode ) }>

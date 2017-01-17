@@ -50,9 +50,7 @@ export default class Drinks extends React.Component {
                             responsive
                             className="drinkTable">
                        <tbody>
-                         { this.state.DrinksServer.map( drink => {
-                             if ( drink.categoryid === cat.id ) {
-                               return (
+                         { this.state.DrinksServer.filter(d => d.categoryid === cat.id).map( drink => (
                                <tr key={ drink.id }>
                                  <td>
                                    { drink.name }
@@ -64,9 +62,8 @@ export default class Drinks extends React.Component {
                                    { drink.price }.-
                                  </td>
                                </tr>
-                               )
+                             ))
                              }
-                           } ) }
                        </tbody>
                      </Table>
                    </Panel>

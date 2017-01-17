@@ -19,7 +19,7 @@ export class Tabs extends React.Component {
     </div>
     );
   }
-
+  // Set index to clicked element
   handleClick( index, event ) {
     event.preventDefault();
     this.setState( {

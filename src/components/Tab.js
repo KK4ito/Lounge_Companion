@@ -1,5 +1,7 @@
 import React from 'react';
-
+/**
+ *  Tab class for the main page
+ */
 export class Tab extends React.Component {
 
   render() {
