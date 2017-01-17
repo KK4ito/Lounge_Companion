@@ -202,39 +202,36 @@ export default class Game extends React.Component {
     } );
   }
 
+  renderComponentClickedTeam() {
+    if ( this.state.toDelete ) {
+      return (<FormControl.Static>{ this.state.toDelete.name }< /FormControl.Static>);
+    } else {
+      return (<FormControl.Static>Hier sollte das angeklickte Team stehen</FormControl.Static>);
+    }
+  }
+
+  renderComponentPlayingTeam() {
+    if ( this.state.Teams[ 1 ] && this.state.Teams[ 2 ] ) {
+      return (<FormControl.Static>{ this.state.Teams[ 1 ].name } vs { this.state.Teams[ 2 ].name }< /FormControl.Static>);
+    } else {
+      return (<FormControl.Static>Nicht genügend Teams vorhanden</FormControl.Static>);
+    }
+  }
+
   render() {
     // Prepare element for clicked team
-    let clickedTeam = null;
-    if ( this.state.toDelete ) {
-      clickedTeam = < FormControl.Static>
-                      { this.state.toDelete.name }
-                      < /FormControl.Static>;
-    } else {
-      clickedTeam = < FormControl.Static>
-                      Hier sollte das angeklickte Team stehen
-                      < /FormControl.Static>;
-    }
+    let clickedTeam = this.renderComponentClickedTeam();
 
     // Prepare element for first two playing teams
-    let playingTeam = null;
-    if ( this.state.Teams[ 1 ] && this.state.Teams[ 2 ] ) {
-      playingTeam = < FormControl.Static>
-                      { this.state.Teams[ 1 ].name } vs
-                      { this.state.Teams[ 2 ].name }
-                      < /FormControl.Static>;
-    } else {
-      playingTeam = < FormControl.Static>
-                      Nicht genügend Teams vorhanden
-                      < /FormControl.Static>;
-    }
+    let playingTeam = this.renderComponentPlayingTeam();
 
     // Prepare captcha elements
-    let captchaObject = < center>
+    let captchaObject = (<center>
                           < ReCAPTCHA
                                       ref={ e => recaptchaInstance = e }
                                       sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
                                       onChange={ this.captchaChanged } />
-                          </center>;
+                                  </center>);
     let captchaCreateTeam = null;
     let captchaDeleteTeam = null;
     let captchaChangeCode = null;
@@ -265,9 +262,7 @@ export default class Game extends React.Component {
                 if ( index !== 0 )
                   return <ListGroupItem
                                         key={ index }
-                                        onClick={ () => this.setState( {
-                                                    toDelete: team
-                                                  } ) }>
+                                        onClick={ () => this.setState({toDelete: team})}>
                            { team.name }
                          </ListGroupItem>
               }, this ) }

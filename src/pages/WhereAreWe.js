@@ -42,7 +42,6 @@ export default class WhereAreWe extends React.Component {
   }
   componentDidUpdate() {
     // Move the map to center on the novum lounge and set a marker
-
     this.state.map.panTo( NOVUM_LOUNGE );
     this.state.marker.setMap( this.state.map );
 
@@ -53,7 +52,7 @@ export default class WhereAreWe extends React.Component {
     if ( navigator.geolocation ) {
       navigator.geolocation.getCurrentPosition(
         (position) => this.setUserLocation( position ),
-        () => this.failedToGetUserLocation(),
+        () => this.failedToGetUserLocation()
       );
     } else {
       // Browser doesn't support Geolocation
@@ -124,15 +123,9 @@ export default class WhereAreWe extends React.Component {
     let directionButton = null;
     // enable the draw line button after a position is set.
     if ( this.state.ownPosi ) {
-      directionButton = <Button onClick={ this.setDirection }>
-                          Draw Line
-                        </Button>;
+      directionButton = (<Button onClick={ this.setDirection }>Draw Line</Button>);
     } else {
-      directionButton = <Button
-                                disabled
-                                onClick={ this.setDirection }>
-                          Draw Line
-                        </Button>;
+      directionButton = <Button disabled onClick={ this.setDirection }>Draw Line</Button>;
     }
     return (
     // Build the maps canvas with the buttons above
