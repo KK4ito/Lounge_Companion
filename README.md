@@ -3,6 +3,10 @@
 
 In the project directory, you can run:
 
+### `npm install`
+Pre-requisite: npm installed
+Installs all dependencies (mandatory before npm start)
+
 ### `npm start`
 
 Runs the app in the development mode.<br>
