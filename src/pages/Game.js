@@ -230,8 +230,10 @@ export default class Game extends React.Component {
                           < ReCAPTCHA
                                       ref={ e => recaptchaInstance = e }
                                       sitekey="6LfArg8UAAAAAERQ_A1e32q4f1Ti-ZbXLwuUOkug"
-                                      onChange={ this.captchaChanged } />
-                                  </center>);
+                                      onChange={ this.captchaChanged }
+                                      className="captchaMargin"
+                          />
+                          </center>;
     let captchaCreateTeam = null;
     let captchaDeleteTeam = null;
     let captchaChangeCode = null;
