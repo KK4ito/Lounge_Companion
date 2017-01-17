@@ -289,7 +289,7 @@ export default class Game extends React.Component {
           <FormGroup controlId="formDelete">
             { clickedTeam }
             <FormControl
-                         type="text"
+                         type="password"
                          placeholder="Gib deinen Code ein"
                          value={ this.state.formDeleteValue }
                          onChange={ this.onChangeDelete } />
@@ -314,7 +314,7 @@ export default class Game extends React.Component {
                          value={ this.state.formCreateName }
                          onChange={ this.onChangeCreateName } />
             <FormControl
-                         type="text"
+                         type="password"
                          placeholder="Gib deinen Code ein"
                          value={ this.state.formCreateCode }
                          onChange={ this.onChangeCreateCode } />
